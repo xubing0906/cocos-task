@@ -24,6 +24,7 @@ CCEffect %{
         normalMap:            { value: normal }
         glossiness:           { value: 0.0 ,editor: { slide: true, range: [0, 1.0], step: 0.001 }}   
         metallic:             { value: 0.0, editor: { slide: true, range: [0, 1.0], step: 0.001 }}
+        metallicMap:          { value: grey }
     - &forward-add
       vert: standard-vs
       frag: standard-fs
@@ -194,6 +195,10 @@ CCProgram standard-fs %{
     uniform sampler2D specularMap;
     #pragma define-meta SPECULAR_UV options([v_uv, v_uv1])
   #endif
+   #if USE_METALLIC_MAP
+    uniform sampler2D metallicMap;
+    #pragma define-meta METALLIC_UV options([v_uv, v_uv1])
+  #endif
 
   #if USE_VERTEX_COLOR
     in vec4 v_color;
@@ -240,6 +245,10 @@ CCProgram standard-fs %{
   }
   float convertMetallic(float inGlossiness,vec3 baseColor)
   {
+    #if USE_METALLIC_MAP
+      vec4 metallicTex = texture(metallicMap, METALLIC_UV);
+      return discolor(metallicTex.rgb);
+    #endif
     //blender
     #if DCC_BLENDER
       return reflectionFactor;
