@@ -188,16 +188,16 @@ CCProgram standard-fs %{
 
   #if USE_SHININESS_MAP
     uniform sampler2D shininessExponentMap;
-    #pragma define-meta GLOSSINESS_UV options([v_uv, v_uv1])
-    #pragma define-meta GLOSSINESS_MAP_CHANNEL options([r,g,b,a])
+    #pragma define GLOSSINESS_UV options([v_uv, v_uv1])
+    #pragma define GLOSSINESS_MAP_CHANNEL options([r,g,b,a])
   #endif
   #if USE_SPECULAR_MAP
     uniform sampler2D specularMap;
-    #pragma define-meta SPECULAR_UV options([v_uv, v_uv1])
+    #pragma define SPECULAR_UV options([v_uv, v_uv1])
   #endif
    #if USE_METALLIC_MAP
     uniform sampler2D metallicMap;
-    #pragma define-meta METALLIC_UV options([v_uv, v_uv1])
+    #pragma define METALLIC_UV options([v_uv, v_uv1])
   #endif
 
   #if USE_VERTEX_COLOR
@@ -206,18 +206,18 @@ CCProgram standard-fs %{
 
   #if USE_ALBEDO_MAP
     uniform sampler2D albedoMap;
-    #pragma define-meta ALBEDO_UV options([v_uv, v_uv1])
+    #pragma define ALBEDO_UV options([v_uv, v_uv1])
   #endif
   #if USE_TRANSPARENT_MAP
     uniform sampler2D transparencyMap;
-    #pragma define-meta TRANSPARENT_UV options([v_uv, v_uv1])
+    #pragma define TRANSPARENT_UV options([v_uv, v_uv1])
   #endif
 
   #if USE_NORMAL_MAP
     in vec3 v_tangent;
     in vec3 v_bitangent;
     uniform sampler2D normalMap;
-    #pragma define-meta NORMAL_UV options([v_uv, v_uv1])
+    #pragma define NORMAL_UV options([v_uv, v_uv1])
   #endif
  
   float discolor(vec3 srcColor) {
@@ -386,12 +386,12 @@ CCProgram shadow-caster-fs %{
 
   #if USE_ALBEDO_MAP
     uniform sampler2D albedoMap;
-    #pragma define-meta ALBEDO_UV options([v_uv, v_uv1])
+    #pragma define ALBEDO_UV options([v_uv, v_uv1])
   #endif
 
   #if USE_ALPHA_TEST
-    #pragma define-meta ALPHA_TEST_CHANNEL options([a, r])
-    #pragma define-meta ALPHA_TEST_CHANNEL options([a, r])
+    #pragma define ALPHA_TEST_CHANNEL options([a, r])
+    #pragma define ALPHA_TEST_CHANNEL options([a, r])
   #endif
 
   vec4 frag () {
