@@ -238,6 +238,7 @@ CCProgram standard-fs %{
     float specularScale = specularFactor;
     #if USE_SPECULAR_MAP
         vec4 specularTex = texture(specularMap, SPECULAR_UV);
+        specularTex.rgb = SRGBToLinear(specularTex.rgb);
         inSpecular = specularTex.rgb;
         specularScale = 1.0;
     #endif
