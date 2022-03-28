@@ -220,6 +220,29 @@ CCProgram standard-fs %{
     #pragma define NORMAL_UV options([v_uv, v_uv1])
   #endif
  
+  
+  bool GetMetallicAlbedoFromDiffuseSpecularMathematic(out float metallic, out vec3 albedo, vec3 diffuse, vec3 specular, float channelFaultTolerant /*= 0.2*/, float f0 /*= 0.04*/)
+  {
+    // inaccuracy match first
+    //GetMetallicAlbedoFromDiffuseSpecular(metallic, albedo, diffuse, specular);
+
+    vec3 delta = diffuse*diffuse + specular*specular + 2.0 * diffuse*specular - f0 * 4.0 * diffuse;
+
+    vec3 deltaSqrt = sqrt(max(vec3(0.0), delta));
+    // solver
+    vec3 m = (-diffuse - specular + 2.0 * f0 + deltaSqrt) / (2.0 * f0);
+
+    float solverMetallic = dot(m, vec3(1.0)) * 0.3333333333333;
+    vec3 solverAlbedo = diffuse + specular - f0 * (1.0 - solverMetallic);
+
+    bool isValidSolver = delta.x >= 0.0 && delta.y >= 0.0 &&  delta.z >= 0.0
+      && abs(m.x - m.y) < channelFaultTolerant && abs(m.x - m.z) < channelFaultTolerant
+      && m.x <= 1.0 && m.y <= 1.0 && m.z <= 1.0;
+    
+    metallic = isValidSolver ? solverMetallic : metallic;
+    albedo = isValidSolver ? solverAlbedo : albedo;
+    return isValidSolver;
+  }
   float discolor(vec3 srcColor) {
     return dot(vec3(0.3,0.59,0.11), srcColor);
   }
@@ -232,7 +255,7 @@ CCProgram standard-fs %{
       return log(shininessExponent)/log(2.0)/10.0;
     #endif
   }
-  vec3 calculateSpecular(float inGlossiness)
+  vec3 getSpecular()
   {
     vec3 inSpecular = specularColor.rgb;
     float specularScale = specularFactor;
@@ -242,7 +265,7 @@ CCProgram standard-fs %{
         inSpecular = specularTex.rgb;
         specularScale = 1.0;
     #endif
-    return  inGlossiness * inSpecular * specularScale;
+    return inSpecular * specularScale;
   }
   float convertMetallic(float inGlossiness,vec3 baseColor)
   {
@@ -255,7 +278,7 @@ CCProgram standard-fs %{
       return reflectionFactor;
     #endif
     //specular
-    vec3 inSpecular = calculateSpecular(inGlossiness);
+    vec3 inSpecular = inGlossiness * getSpecular();
     //calculate metallic
     float condition1 = clamp((discolor(baseColor) - 0.4) * -5.0, 0.0, 1.0);
     float resultSpecular = discolor(inSpecular);
@@ -303,12 +326,15 @@ CCProgram standard-fs %{
     #if HAS_EXPORTED_METALLIC
       inMetallic = metallic;
     #else
-      inMetallic = convertMetallic(inGlossiness,baseColor.rgb);
+      inMetallic = convertMetallic(inGlossiness, baseColor.rgb);
     #endif
     float roughness = 1.0 - inGlossiness;
-    //vec3 albedo = mix(baseColor.rgb, baseColor.rgb + inSpecular, metallic);
-    //float specular = discolor(inSpecular) * 12.5;
-    s.albedo = baseColor;
+
+    float outMetallic;
+    vec3 outAlbedo;
+    bool isValidSolver = GetMetallicAlbedoFromDiffuseSpecularMathematic(outMetallic, outAlbedo, baseColor.rgb, getSpecular(), 0.2, 0.04);
+    
+    s.albedo = isValidSolver? vec4(outAlbedo, baseColor.a) : baseColor;
     s.normal = v_normal;
     #if USE_NORMAL_MAP
       vec3 nmmp = texture(normalMap, NORMAL_UV).xyz - vec3(0.5);
@@ -322,7 +348,7 @@ CCProgram standard-fs %{
 
     s.occlusion = 1.0;
     s.roughness = roughness;
-    s.metallic = inMetallic;
+    s.metallic = isValidSolver ? outMetallic : inMetallic;
     s.emissive = vec3(0.0);
 
     #if USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
