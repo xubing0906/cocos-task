@@ -219,9 +219,9 @@ CCProgram standard-fs %{
   
 bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out vec3 albedo, vec3 diffuse, vec3 specular, float f0 /*= 0.04*/)
 {
-	float d = max(max(diffuse.x, diffuse.y), diffuse.z) + EPSILON_LOWP;
-	vec3 normalizedColor = diffuse / d;
-	normalizedColor = length(normalizedColor) < EPSILON ? specular : normalizedColor;
+	float d = max(max(diffuse.x, diffuse.y), diffuse.z);
+	vec3 normalizedColor = diffuse / (d + (d < EPSILON_LOWP ? EPSILON_LOWP : 0.0));
+	normalizedColor = d < EPSILON_LOWP ? specular : normalizedColor;
 
 	float s = max(max(specular.x, specular.y), specular.z);
 
@@ -231,8 +231,8 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
 	float solverMetallic = (-d - s + 2.0 * f0 + deltaSqrt) / (2.0 * f0);
 	vec3 solverAlbedo = (d + s) * normalizedColor - vec3(f0 * (1.0 - solverMetallic));
 
-	bool isValidSolver = delta >= 0.0	&& solverMetallic >= 0.0 && solverMetallic <= 1.0;
-	metallic = isValidSolver ? solverMetallic : metallic;
+	bool isValidSolver = delta >= 0.0;
+	metallic = isValidSolver ? clamp(solverMetallic, 0.0, 1.0) : metallic;
 	albedo = isValidSolver ? vec3(max(0.0, solverAlbedo.x), max(0.0, solverAlbedo.y), max(0.0, solverAlbedo.z)) : albedo;
 	return isValidSolver;
 }
@@ -249,7 +249,7 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
       return clamp(log(shininessExponent + EPSILON) * 0.1442695 /*/log(2.0)/10.0*/, 0.0, 1.0);
     #endif
   }
-  vec3 getSpecular()
+  vec4 getSpecularColorAndFactor()
   {
     vec3 inSpecular = specularColor.rgb;
     float specularScale = specularFactor;
@@ -259,7 +259,7 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
         inSpecular = specularTex.rgb;
         specularScale = 1.0;
     #endif
-    return inSpecular * specularScale;
+    return vec4(inSpecular, specularScale);
   }
   float convertMetallic(float inGlossiness,vec3 baseColor)
   {
@@ -315,18 +315,19 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
       #endif
     #endif
 
+    vec4 specularColorAndFactor = getSpecularColorAndFactor();
     //metallic
     float inMetallic = 0.0;
     #if HAS_EXPORTED_METALLIC
       inMetallic = metallic;
     #else
-      inMetallic = convertMetallic(inGlossiness, baseColor.rgb);
+      // inMetallic = convertMetallic(inGlossiness, baseColor.rgb, specularColorAndFactor.rgb * specularColorAndFactor.w);
     #endif
     float roughness = 1.0 - inGlossiness;
 
     float outMetallic = 1.0;
     vec3 outAlbedo = vec3(0.0,1.0,0.0);
-    bool isValidSolver = GetMetallicAlbedoFromDiffuseSpecularWithoutColor(outMetallic, outAlbedo, baseColor.rgb, getSpecular(), 0.04);
+    bool isValidSolver = GetMetallicAlbedoFromDiffuseSpecularWithoutColor(outMetallic, outAlbedo, baseColor.rgb, specularColorAndFactor.rgb, 0.04);
     
     s.albedo = isValidSolver? vec4(outAlbedo, baseColor.a) : baseColor;
     s.normal = v_normal;
@@ -343,6 +344,7 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
     s.occlusion = 1.0;
     s.roughness = roughness;
     s.metallic = isValidSolver ? outMetallic : inMetallic;
+    s.specularIntensity = mix(0.0, specularColorAndFactor.w, s.metallic) * 0.5;
     s.emissive = vec3(0.0);
 
     #if USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
