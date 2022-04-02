@@ -9,9 +9,9 @@ CCEffect %{
       properties: &props
         diffuseMap:           { value: grey, target: albedoMap, editor: { displayName: DiffuseMap }}
         diffuseColor:         { value: [1.0,1.0,1.0,1.0],linear: true, editor: { displayName: DiffuseColor, type: color }}   
-        diffuseFactor:        { value: 0.0 }
+        diffuseFactor:        { value: 1.0 }
         shininessExponentMap: { value: grey }
-        shininessExponent:    { value: 0.0 }   
+        shininessExponent:    { value: 100.0 }   
         specularColor:        { value: [0.0,0.0,0.0,0.0],linear: true, editor: { displayName: SpecularColor, type: color }} 
         specularMap:          { value: grey }
         specularFactor:       { value: 1.0 }
@@ -98,7 +98,6 @@ CCProgram standard-vs %{
   precision highp float;
   #include <input-standard>
   #include <cc-global>
-  #include <decode-base>
   #include <cc-local-batch>
   #include <shared-ubos>
   #include <cc-fog-vs>
@@ -186,11 +185,11 @@ CCProgram standard-fs %{
   in vec3 v_normal;
   
 
-  #pragma define-meta  TEXTURE_UV options([v_uv, v_uv1])
+  #pragma define TEXTURE_UV options([v_uv, v_uv1])
 
   #if USE_SHININESS_MAP
     uniform sampler2D shininessExponentMap;
-    #pragma define-meta  GLOSSINESS_MAP_CHANNEL options([r,g,b,a])
+    #pragma define GLOSSINESS_MAP_CHANNEL options([r,g,b,a])
   #endif
   #if USE_SPECULAR_MAP
     uniform sampler2D specularMap;
@@ -216,7 +215,8 @@ CCProgram standard-fs %{
     uniform sampler2D normalMap;
   #endif
  
-  
+#define EPSILON_LOWP 0.0001
+#define GRAY_VECTOR       vec3(0.299, 0.587, 0.114)
 bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out vec3 albedo, vec3 diffuse, vec3 specular, float f0 /*= 0.04*/)
 {
 	float d = max(max(diffuse.x, diffuse.y), diffuse.z);
@@ -240,13 +240,17 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
   float discolor(vec3 srcColor) {
     return dot(GRAY_VECTOR, srcColor);
   }
-  float convertShininessExponent()
+  float convertShininessExponent(out float specularIntensityMultiplier)
   {
     #if DCC_BLENDER
       //blender
+      specularIntensityMultiplier = 1.0;
       return clamp(sqrt(shininessExponent) * 0.1/*/10.0*/, 0.0, 1.0);
     #else
-      return clamp(log(shininessExponent + EPSILON) * 0.1442695 /*/log(2.0)/10.0*/, 0.0, 1.0);
+      float l2 = clamp(log(shininessExponent + EPSILON) * 0.1442695 /*/log(2.0)/10.0*/, 0.0, 1.0);
+      float glossiness = pow(l2, 0.5);
+      specularIntensityMultiplier = mix(20.0, 1.0, glossiness);
+      return glossiness;
     #endif
   }
   vec4 getSpecularColorAndFactor()
@@ -292,7 +296,7 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
       vec4 texColor = texture(albedoMap, TEXTURE_UV);
       texColor.rgb = SRGBToLinear(texColor.rgb);
       baseColor *= texColor;
-      diffuseScale = 1.0; 
+      diffuseScale = 1.0;
     #endif
     baseColor.rgb *= diffuseScale;
     
@@ -300,18 +304,18 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
       baseColor.a = texture(transparencyMap,TEXTURE_UV).a * transparencyFactor;
     #endif
     //glossiness
-    float inGlossiness = 0.0;
+    float inGlossiness = 0.0, specularIntensityMultiplier = 1.0;
     #if HAS_EXPORTED_GLOSSINESS
       inGlossiness = glossiness;
     #else
       #if USE_SHININESS_MAP
         #if GLOSSINESS_MAP_USE_SINGLE_CHANNEL
-          inGlossiness = texture(shininessExponentMap, GLOSSINESS_UV).GLOSSINESS_MAP_CHANNEL;
+          inGlossiness = texture(shininessExponentMap, TEXTURE_UV).GLOSSINESS_MAP_CHANNEL;
         #else
-          inGlossiness = discolor(texture(shininessExponentMap, GLOSSINESS_UV).rgb);
+          inGlossiness = discolor(texture(shininessExponentMap, TEXTURE_UV).rgb);
         #endif
       #else
-        inGlossiness = convertShininessExponent();
+        inGlossiness = convertShininessExponent(specularIntensityMultiplier);
       #endif
     #endif
 
@@ -343,8 +347,9 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
 
     s.occlusion = 1.0;
     s.roughness = roughness;
+    s.specularIntensity = 0.5;
     s.metallic = isValidSolver ? outMetallic : inMetallic;
-    s.specularIntensity = mix(0.0, specularColorAndFactor.w, s.metallic) * 0.5;
+    s.specularIntensity = mix(0.0, specularColorAndFactor.w, s.metallic) * specularIntensityMultiplier * 0.5;
     s.emissive = vec3(0.0);
 
     #if USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
@@ -360,6 +365,7 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
 CCProgram shadow-caster-vs %{
   precision highp float;
   #include <input-standard>
+  #include <decode-base>
   #include <decode-base>
   #include <cc-local-batch>
   #include <shared-ubos>
@@ -407,14 +413,14 @@ CCProgram shadow-caster-fs %{
   in vec4 v_worldPos;
   in float v_clip_depth;
 
-  #pragma define-meta  TEXTURE_UV options([v_uv, v_uv1])
+  #pragma define TEXTURE_UV options([v_uv, v_uv1])
 
   #if USE_ALBEDO_MAP
     uniform sampler2D albedoMap;
   #endif
 
   #if USE_ALPHA_TEST
-    #pragma define-meta  ALPHA_TEST_CHANNEL options([a, r])
+    #pragma define ALPHA_TEST_CHANNEL options([a, r])
   #endif
 
   vec4 frag () {
