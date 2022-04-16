@@ -227,17 +227,17 @@ CCProgram standard-fs %{
   #endif
 
   #if USE_ROUGHNESS_MAP
-    #pragma define-meta ROUGHNESS_CHANNEL options([a, r])
+    #pragma define-meta ROUGHNESS_CHANNEL options([r, g, b, a])
     uniform sampler2D roughnessMap;
   #endif
 
   #if USE_OCCLUSION_MAP
-    #pragma define-meta OCCLUSION_CHANNEL options([a, r])
+    #pragma define-meta OCCLUSION_CHANNEL options([r, g, b, a])
     uniform sampler2D occlusionMap;
   #endif
 
   #if USE_TRANSPARENCY_MAP
-    #pragma define-meta TRANSPARENCY_CHANNEL options([a, r])
+    #pragma define-meta TRANSPARENCY_CHANNEL options([r, g, b, a])
     uniform sampler2D transparencyMap;
   #endif
 
@@ -248,7 +248,7 @@ CCProgram standard-fs %{
 
 
   #if USE_CUTOUT_MAP
-    #pragma define-meta ALPHA_TEST_CHANNEL options([a, r])
+    #pragma define-meta CUTOUT_CHANNEL options([a, r, g, b])
     uniform sampler2D cutoutMap;
   #endif
 
@@ -289,28 +289,47 @@ CCProgram standard-fs %{
        #endif
     #endif
     s.metallic = metallicValue;
-    
 
-    // #if USE_ROUGHNESS_MAP
-    //   uniform sampler2D roughnessMap;
-    // #endif
+    float roughnessValue = roughness;
+    #if USE_ROUGHNESS_MAP
+       vec4 roughnessColor = texture(roughnessMap, TEXTURE_UV);
+       roughnessValue = discolor(roughnessColor.rgb);
+       #if USE_ROUGHNESS_CHANNEL 
+           roughnessColor.rgb = SRGBToLinear(roughnessColor.rgb);
+           roughnessValue = roughnessColor.ROUGHNESS_CHANNEL;
+       #endif
+    #endif
+    s.roughness = roughnessValue;
 
-    // #if USE_OCCLUSION_MAP
-    //   uniform sampler2D occlusionMap;
-    // #endif
 
-    // #if USE_TRANSPARENCY_MAP
-    //   uniform sampler2D transparencyMap;
-    // #endif
+    float occlusionValue = occlusion;
+    #if USE_OCCLUSION_MAP
+       vec4 occlusionColor = texture(occlusionMap, TEXTURE_UV);
+       occlusionValue = discolor(occlusionColor.rgb);
+       #if USE_OCCLUSION_CHANNEL 
+           occlusionColor.rgb = SRGBToLinear(occlusionColor.rgb);
+           occlusionValue = occlusionColor.OCCLUSION_CHANNEL;
+       #endif
+    #endif
+    s.occlusion = occlusionValue;
+
+    float transparencyValue = transparency;
+    #if USE_TRANSPARENCY_MAP
+       vec4 transparencyColor = texture(transparencyMap, TEXTURE_UV);
+       transparencyValue = discolor(transparencyColor.rgb);
+       #if USE_TRANSPARENCY_CHANNEL 
+           transparencyColor.rgb = SRGBToLinear(transparencyColor.rgb);
+           transparencyValue = transparencyColor.TRANSPARENCY_CHANNEL;
+       #endif
+    #endif
+    baseColor.a = transparencyValue;
+
   /////////////////////////////
 
-    #if USE_ALPHA_TEST
+    #if USE_CUTOUT_MAP
       vec4 cutoutColor = texture(cutoutMap, TEXTURE_UV);
-      cutoutColor.rgb = SRGBToLinear(cutoutColor.rgb);
-      if (cutoutColor.ALPHA_TEST_CHANNEL < 0.0) discard;
+      if (cutoutColor.CUTOUT_CHANNEL == 0.0) discard;
     #endif
-
-
 
     s.albedo = baseColor;
 
@@ -337,18 +356,8 @@ CCProgram standard-fs %{
     HIGHP_VALUE_TO_STRUCT_DEFINED(v_position, s.position);
 
   
-    #if USE_METALLIC_ROUGHNESS_MAP
-      //vec4 metallicRoughness = texture(metallicRoughnessMap, PBR_UV);
-
-    #endif
-    #if USE_OCCLUSION_MAP
-      //pbr.x *= texture(occlusionMap, PBR_UV).OCCLUSION_CHANNEL;
-    #endif
-    s.occlusion = 0.0;
-    s.roughness = 0.0;
     s.specularIntensity = 0.5;
     
-
     s.emissive = emissive.rgb * emissiveScaleParam.xyz;
     #if USE_EMISSIVE_MAP
       s.emissive *= SRGBToLinear(texture(emissiveMap, EMISSIVE_UV).rgb);
