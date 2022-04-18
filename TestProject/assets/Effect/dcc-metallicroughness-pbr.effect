@@ -156,14 +156,9 @@ CCProgram standard-vs %{
     #endif
 
     v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
-    #if SAMPLE_FROM_RT
-      CC_HANDLE_RT_SAMPLE_FLIP(v_uv);
-    #endif
+
     #if HAS_SECOND_UV
       v_uv1 = a_texCoord1 * tilingOffset.xy + tilingOffset.zw;
-      #if SAMPLE_FROM_RT
-        CC_HANDLE_RT_SAMPLE_FLIP(v_uv1);
-      #endif
     #endif
 
     #if USE_VERTEX_COLOR
@@ -288,6 +283,7 @@ CCProgram standard-fs %{
            metallicValue = metallicColor.METALLIC_CHANNEL;
        #endif
     #endif
+    s.specularIntensity = 0.5;
     s.metallic = metallicValue;
 
     float roughnessValue = roughness;
