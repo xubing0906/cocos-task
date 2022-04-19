@@ -28,7 +28,7 @@ CCEffect %{
         emissiveColor:        { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { type: color } }
         emissiveColorMap:     { value: grey }
         
-        normalStrenth:        { value: 1.0, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
+        normalStrength:        { value: 1.0, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
         normalMap:            { value: normal }
     - &forward-add
       vert: standard-vs
@@ -93,7 +93,7 @@ CCProgram shared-ubos %{
     float roughness;
     float metallic;
     float transparency;
-    float normalStrenth;
+    float normalStrength;
     float emissive;
   };
 }%
@@ -365,8 +365,8 @@ CCProgram standard-fs %{
     #if USE_NORMAL_MAP
       vec3 nmmp = texture(normalMap, NORMAL_UV).xyz - vec3(0.5);
       s.normal =
-        (nmmp.x * normalStrenth) * normalize(v_tangent) +
-        (nmmp.y * normalStrenth) * normalize(v_bitangent) +
+        (nmmp.x * normalStrength) * normalize(v_tangent) +
+        (nmmp.y * normalStrength) * normalize(v_bitangent) +
         nmmp.z * normalize(s.normal);
     #endif
 
