@@ -20,11 +20,15 @@ CCEffect %{
         occlusionMap:         { value: white }
         transparency:         { value: 0.6, editor: { slide: true, range: [0, 1.0], step: 0.001 } }
         transparencyMap:      { value: grey }
+        transparencyColor:    { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { type: color } }
+        transparencyColorMap: { value: grey }
         cutoutMap:            { value: grey }
-        emissive:             { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { type: color } }
+        emissive:             { value: 1.0 }
         emissiveMap:          { value: grey }
-        emissiveScale:        { value: [1.0, 1.0, 1.0], target: emissiveScaleParam.xyz }
-        normalStrenth:        { value: 1.0, target: emissiveScaleParam.w, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
+        emissiveColor:        { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { type: color } }
+        emissiveColorMap:     { value: grey }
+        
+        normalStrenth:        { value: 1.0, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
         normalMap:            { value: normal }
     - &forward-add
       vert: standard-vs
@@ -81,14 +85,16 @@ CCProgram shared-ubos %{
     vec4 albedo;
     vec4 albedoScaleAndCutoff;
 
-    vec4 emissive;
-    vec4 emissiveScaleParam;
-    float baseWeight;
+    vec4 transparencyColor;
+    vec4 emissiveColor;
 
+    float baseWeight;
     float occlusion;
     float roughness;
     float metallic;
     float transparency;
+    float normalStrenth;
+    float emissive;
   };
 }%
 
@@ -156,9 +162,14 @@ CCProgram standard-vs %{
     #endif
 
     v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
-
+    #if SAMPLE_FROM_RT
+      CC_HANDLE_RT_SAMPLE_FLIP(v_uv);
+    #endif
     #if HAS_SECOND_UV
       v_uv1 = a_texCoord1 * tilingOffset.xy + tilingOffset.zw;
+      #if SAMPLE_FROM_RT
+        CC_HANDLE_RT_SAMPLE_FLIP(v_uv1);
+      #endif
     #endif
 
     #if USE_VERTEX_COLOR
@@ -232,13 +243,18 @@ CCProgram standard-fs %{
   #endif
 
   #if USE_TRANSPARENCY_MAP
-    #pragma define-meta TRANSPARENCY_CHANNEL options([r, g, b, a])
     uniform sampler2D transparencyMap;
+  #endif
+
+  #if USE_TRANSPARENCYCOLOR_MAP
+    uniform sampler2D transparencyColorMap;
   #endif
 
   #if USE_EMISSIVE_MAP
     uniform sampler2D emissiveMap;
-    #pragma define-meta EMISSIVE_UV options([v_uv, v_uv1])
+  #endif
+  #if USE_EMISSIVECOLOR_MAP
+    uniform sampler2D emissiveColorMap;
   #endif
 
 
@@ -283,7 +299,6 @@ CCProgram standard-fs %{
            metallicValue = metallicColor.METALLIC_CHANNEL;
        #endif
     #endif
-    s.specularIntensity = 0.5;
     s.metallic = metallicValue;
 
     float roughnessValue = roughness;
@@ -311,14 +326,20 @@ CCProgram standard-fs %{
 
     float transparencyValue = transparency;
     #if USE_TRANSPARENCY_MAP
-       vec4 transparencyColor = texture(transparencyMap, TEXTURE_UV);
-       transparencyValue = discolor(transparencyColor.rgb);
-       #if USE_TRANSPARENCY_CHANNEL 
-           transparencyColor.rgb = SRGBToLinear(transparencyColor.rgb);
-           transparencyValue = transparencyColor.TRANSPARENCY_CHANNEL;
-       #endif
+       vec4 transparencyTex = texture(transparencyMap, TEXTURE_UV);
+       transparencyValue = discolor(transparencyTex.rgb);
     #endif
     baseColor.a = transparencyValue;
+    if(baseColor.a < 1.0)
+    {
+        vec4 transparentRegionColor = transparencyColor;
+        #if USE_TRANSPARENCYCOLOR_MAP
+            transparentRegionColor = texture(transparencyColorMap, TEXTURE_UV);
+            transparentRegionColor.rgb = SRGBToLinear(transparentRegionColor.rgb);
+        #endif
+        baseColor.rgb = transparentRegionColor.rgb;
+    }
+
 
   /////////////////////////////
 
@@ -344,8 +365,8 @@ CCProgram standard-fs %{
     #if USE_NORMAL_MAP
       vec3 nmmp = texture(normalMap, NORMAL_UV).xyz - vec3(0.5);
       s.normal =
-        (nmmp.x * emissiveScaleParam.w) * normalize(v_tangent) +
-        (nmmp.y * emissiveScaleParam.w) * normalize(v_bitangent) +
+        (nmmp.x * normalStrenth) * normalize(v_tangent) +
+        (nmmp.y * normalStrenth) * normalize(v_bitangent) +
         nmmp.z * normalize(s.normal);
     #endif
 
@@ -353,11 +374,22 @@ CCProgram standard-fs %{
 
   
     s.specularIntensity = 0.5;
-    
-    s.emissive = emissive.rgb * emissiveScaleParam.xyz;
-    #if USE_EMISSIVE_MAP
-      s.emissive *= SRGBToLinear(texture(emissiveMap, EMISSIVE_UV).rgb);
+
+    //emissive
+    s.emissive = emissiveColor.rgb;
+    #if USE_EMISSIVECOLOR_MAP
+      s.emissive *= SRGBToLinear(texture(emissiveColorMap, TEXTURE_UV).rgb);
     #endif
+
+    vec4 emissiveScaleColor = vec4(1.0,1.0,1.0,1.0);
+    float emissiveScale = emissive;
+    #if USE_EMISSIVE_MAP
+        emissiveScaleColor = texture(emissiveMap, TEXTURE_UV);
+        emissiveScaleColor.rgb = SRGBToLinear(emissiveScaleColor.rgb);
+        emissiveScale = 1.0;
+    #endif
+    s.emissive *= emissiveScale;
+    s.emissive *= emissiveScaleColor.rgb;
   }
 
   CC_STANDARD_SURFACE_ENTRY()
