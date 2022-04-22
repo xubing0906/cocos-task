@@ -9,9 +9,9 @@ CCEffect %{
       properties: &props
         tilingOffset:         { value: [1.0, 1.0, 0.0, 0.0] }
         mainColor:            { value: [1.0, 1.0, 1.0, 1.0], target: albedo, linear: true, editor: { displayName: BaseColor, type: color } }
-        mainTexture:          { value: grey, target: albedoMap, editor: { displayName: BaseMap } }
+        mainTexture:          { value: grey, target: albedoMap, editor: { displayName: BaseColorMap } }
         baseWeightMap:        { value: grey }
-        albedoScale:          { value: [1.0, 1.0, 1.0], target: albedoScaleAndCutoff.xyz }
+        albedoScale:          { value: [1.0, 1.0, 1.0], target: albedoScaleAndCutoff.xyz, editor: { displayName: BaseWeight } }
         roughness:            { value: 1.0 }
         roughnessMap:         { value: grey }
         metallic:             { value: 1.0 }
@@ -23,7 +23,7 @@ CCEffect %{
         emissive:             { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { displayName: EmissiveColor, type: color} }
         emissiveMap:          { value: grey, editor: { displayName: EmissiveColorMap } }
         opacity:              { value: 1.0, editor: { slide: true, range: [0, 1.0], step: 0.001 } }
-        opacityMap:           { value: grey }
+        opacityMap:           { value: grey, editor: { parent: USE_OPACITY_MAP } }
         normalStrength:       { value: 1.0, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
         normalMap:            { value: normal }
     - &forward-add
@@ -270,15 +270,13 @@ CCProgram standard-fs %{
       baseColor *= texColor;
     #endif
 
-    vec4 weightColor = vec4(1.0,1.0,1.0,1.0);
-    vec3 albedoScale = albedoScaleAndCutoff.rgb;
     #if USE_WEIGHT_MAP
-        weightColor = texture(baseWeightMap, TEXTURE_UV);
+        vec4 weightColor = texture(baseWeightMap, TEXTURE_UV);
         weightColor.rgb = SRGBToLinear(weightColor.rgb);
-        albedoScale = vec3(1.0,1.0,1.0);
+        baseColor.rgb *= weightColor.rgb;
+    #else
+        baseColor.rgb *= albedoScaleAndCutoff.rgb;
     #endif
-    weightColor.rgb *= albedoScale;
-    baseColor.rgb *= weightColor.rgb;
     ////////////////////////
     float metallicValue = metallic;
     #if USE_METALLIC_MAP
@@ -289,7 +287,6 @@ CCProgram standard-fs %{
            metallicValue = metallicColor.METALLIC_CHANNEL;
        #endif
     #endif
-    s.specularIntensity = 0.5;
     s.metallic = metallicValue;
 
     float roughnessValue = roughness;
@@ -353,12 +350,14 @@ CCProgram standard-fs %{
         emissiveColor.rgb = SRGBToLinear(texture(emissiveMap, TEXTURE_UV).rgb);
     #endif
     //emissive color scale
-    vec4 emissiveScaleColor = emissiveScale;
     #if USE_EMISSIVESCALE_MAP
-        emissiveScaleColor = texture(emissiveScaleMap, TEXTURE_UV);
+        vec4 emissiveScaleColor = texture(emissiveScaleMap, TEXTURE_UV);
         emissiveScaleColor.rgb = SRGBToLinear(emissiveScaleColor.rgb);
+        emissiveColor.rgb *= emissiveScaleColor.rgb;
+    #else
+        emissiveColor.rgb *= emissiveScale.rgb;
     #endif
-    emissiveColor.rgb *= emissiveScaleColor.rgb;
+    
     s.emissive = emissiveColor.rgb;
   }
 

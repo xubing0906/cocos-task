@@ -98,6 +98,7 @@ CCProgram standard-vs %{
   precision highp float;
   #include <input-standard>
   #include <cc-global>
+  #include <decode-base>
   #include <cc-local-batch>
   #include <shared-ubos>
   #include <cc-fog-vs>
@@ -185,11 +186,11 @@ CCProgram standard-fs %{
   in vec3 v_normal;
   
 
-  #pragma define TEXTURE_UV options([v_uv, v_uv1])
+  #pragma define-meta TEXTURE_UV options([v_uv, v_uv1])
 
   #if USE_SHININESS_MAP
     uniform sampler2D shininessExponentMap;
-    #pragma define GLOSSINESS_MAP_CHANNEL options([r,g,b,a])
+    #pragma define-meta GLOSSINESS_MAP_CHANNEL options([r,g,b,a])
   #endif
   #if USE_SPECULAR_MAP
     uniform sampler2D specularMap;
@@ -215,8 +216,6 @@ CCProgram standard-fs %{
     uniform sampler2D normalMap;
   #endif
  
-#define EPSILON_LOWP 0.0001
-#define GRAY_VECTOR       vec3(0.299, 0.587, 0.114)
 bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out vec3 albedo, vec3 diffuse, vec3 specular, float f0 /*= 0.04*/)
 {
 	float d = max(max(diffuse.x, diffuse.y), diffuse.z);
@@ -348,6 +347,7 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
     s.occlusion = 1.0;
     s.roughness = roughness;
     s.specularIntensity = 0.5;
+    s.specularIntensity = 0.5;
     s.metallic = isValidSolver ? outMetallic : inMetallic;
     s.specularIntensity = mix(0.0, specularColorAndFactor.w, s.metallic) * specularIntensityMultiplier * 0.5;
     s.emissive = vec3(0.0);
@@ -365,6 +365,7 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
 CCProgram shadow-caster-vs %{
   precision highp float;
   #include <input-standard>
+  #include <decode-base>
   #include <decode-base>
   #include <decode-base>
   #include <cc-local-batch>
@@ -413,14 +414,14 @@ CCProgram shadow-caster-fs %{
   in vec4 v_worldPos;
   in float v_clip_depth;
 
-  #pragma define TEXTURE_UV options([v_uv, v_uv1])
+  #pragma define-meta TEXTURE_UV options([v_uv, v_uv1])
 
   #if USE_ALBEDO_MAP
     uniform sampler2D albedoMap;
   #endif
 
   #if USE_ALPHA_TEST
-    #pragma define ALPHA_TEST_CHANNEL options([a, r])
+    #pragma define-meta ALPHA_TEST_CHANNEL options([a, r])
   #endif
 
   vec4 frag () {

@@ -30,21 +30,21 @@
     {
       "diffuseColor": {
         "__type__": "cc.Color",
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 85,
+        "g": 85,
+        "b": 85,
         "a": 255
       },
       "diffuseFactor": 1,
-      "shininessExponent": 20,
+      "shininessExponent": 50,
       "specularColor": {
         "__type__": "cc.Color",
-        "r": 138,
-        "g": 138,
-        "b": 138,
-        "a": 255
+        "r": 129,
+        "g": 129,
+        "b": 129,
+        "a": 0
       },
-      "transparencyFactor": 1
+      "specularFactor": 50
     },
     {},
     {}
