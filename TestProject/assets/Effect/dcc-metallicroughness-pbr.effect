@@ -8,26 +8,22 @@ CCEffect %{
       frag: standard-fs
       properties: &props
         tilingOffset:         { value: [1.0, 1.0, 0.0, 0.0] }
-        baseColor:            { value: [1.0, 1.0, 1.0, 1.0], target: albedo, linear: true, editor: { displayName: Albedo, type: color } }
-        baseMap:              { value: grey, target: albedoMap, editor: { displayName: BaseMap } }
+        mainColor:            { value: [1.0, 1.0, 1.0, 1.0], target: albedo, linear: true, editor: { displayName: BaseColor, type: color } }
+        mainTexture:          { value: grey, target: albedoMap, editor: { displayName: BaseMap } }
         baseWeightMap:        { value: grey }
-        baseWeight:           { value: 1.0 }
+        albedoScale:          { value: [1.0, 1.0, 1.0], target: albedoScaleAndCutoff.xyz }
         roughness:            { value: 1.0 }
         roughnessMap:         { value: grey }
         metallic:             { value: 1.0 }
         metallicMap:          { value: grey }
         occlusion:            { value: 1.0 }
         occlusionMap:         { value: white }
-        transparency:         { value: 1.0 }
-        transparencyMap:      { value: grey }
-        transparencyColor:    { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { type: color } }
-        transparencyColorMap: { value: grey }
-        cutoutMap:            { value: grey }
-        emissive:             { value: 1.0 }
-        emissiveMap:          { value: grey }
-        emissiveColor:        { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { type: color } }
-        emissiveColorMap:     { value: grey }
-        opacity:              { value: 1.0}
+        emissiveScale:        { value: [1.0, 1.0, 1.0, 1.0], editor: { displayName: Emissive } }
+        emissiveScaleMap:     { value: grey, editor: { displayName: EmissiveMap } }
+        emissive:             { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { displayName: EmissiveColor, type: color} }
+        emissiveMap:          { value: grey, editor: { displayName: EmissiveColorMap } }
+        opacity:              { value: 1.0, editor: { slide: true, range: [0, 1.0], step: 0.001 } }
+        opacityMap:           { value: grey }
         normalStrength:       { value: 1.0, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
         normalMap:            { value: normal }
     - &forward-add
@@ -84,17 +80,12 @@ CCProgram shared-ubos %{
     vec4 tilingOffset;
     vec4 albedo;
     vec4 albedoScaleAndCutoff;
-
-    vec4 transparencyColor;
-    vec4 emissiveColor;
-
-    float baseWeight;
+    vec4 emissive;
+    vec4 emissiveScale;
     float occlusion;
     float roughness;
     float metallic;
-    float transparency;
     float normalStrength;
-    float emissive;
     float opacity;
   };
 }%
@@ -103,7 +94,6 @@ CCProgram standard-vs %{
   precision highp float;
   #include <input-standard>
   #include <cc-global>
-  #include <decode-base>
   #include <decode-base>
   #include <cc-local-batch>
   #include <shared-ubos>
@@ -255,14 +245,12 @@ CCProgram standard-fs %{
   #if USE_EMISSIVE_MAP
     uniform sampler2D emissiveMap;
   #endif
-  #if USE_EMISSIVECOLOR_MAP
-    uniform sampler2D emissiveColorMap;
+  #if USE_EMISSIVESCALE_MAP
+    uniform sampler2D emissiveScaleMap;
   #endif
 
-
-  #if USE_CUTOUT_MAP
-    #pragma define-meta CUTOUT_CHANNEL options([a, r, g, b])
-    uniform sampler2D cutoutMap;
+  #if USE_OPACITY_MAP
+    uniform sampler2D opacityMap;
   #endif
 
   float discolor(vec3 srcColor) {
@@ -283,13 +271,13 @@ CCProgram standard-fs %{
     #endif
 
     vec4 weightColor = vec4(1.0,1.0,1.0,1.0);
-    float weightValue = baseWeight;
+    vec3 albedoScale = albedoScaleAndCutoff.rgb;
     #if USE_WEIGHT_MAP
         weightColor = texture(baseWeightMap, TEXTURE_UV);
         weightColor.rgb = SRGBToLinear(weightColor.rgb);
-        weightValue = 1.0;
+        albedoScale = vec3(1.0,1.0,1.0);
     #endif
-    weightColor.rgb *= weightValue;
+    weightColor.rgb *= albedoScale;
     baseColor.rgb *= weightColor.rgb;
     ////////////////////////
     float metallicValue = metallic;
@@ -327,34 +315,12 @@ CCProgram standard-fs %{
     #endif
     s.occlusion = occlusionValue;
 
-    float transparencyValue = transparency;
-    #if USE_TRANSPARENCY_MAP
-       vec4 transparencyTex = texture(transparencyMap, TEXTURE_UV);
-       transparencyValue = discolor(transparencyTex.rgb);
+    #if USE_OPACITY_MAP
+      baseColor.a = 1.0 - texture(opacityMap, TEXTURE_UV).a;
+    #else
+      baseColor.a = 1.0 - opacity;
     #endif
-    baseColor.a = transparencyValue;
-    if(baseColor.a < 1.0)
-    {
-        vec4 transparentRegionColor = transparencyColor;
-        #if USE_TRANSPARENCYCOLOR_MAP
-            transparentRegionColor = texture(transparencyColorMap, TEXTURE_UV);
-            transparentRegionColor.rgb = SRGBToLinear(transparentRegionColor.rgb);
-        #endif
-        baseColor.rgb = transparentRegionColor.rgb;
-    }
-
-    #if USE_OPACITY
-        baseColor.a = opacity;
-    #endif
-
-
-  /////////////////////////////
-
-    #if USE_CUTOUT_MAP
-      vec4 cutoutColor = texture(cutoutMap, TEXTURE_UV);
-      if (cutoutColor.CUTOUT_CHANNEL == 0.0) discard;
-    #endif
-
+  ///////////////////////////// 
     s.albedo = baseColor;
 
     #if USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
@@ -379,24 +345,21 @@ CCProgram standard-fs %{
 
     HIGHP_VALUE_TO_STRUCT_DEFINED(v_position, s.position);
 
-  
     s.specularIntensity = 0.5;
 
-    //emissive
-    s.emissive = emissiveColor.rgb;
-    #if USE_EMISSIVECOLOR_MAP
-      s.emissive *= SRGBToLinear(texture(emissiveColorMap, TEXTURE_UV).rgb);
-    #endif
-
-    vec4 emissiveScaleColor = vec4(1.0,1.0,1.0,1.0);
-    float emissiveScale = emissive;
+    //emissive color
+    vec3 emissiveColor = emissive.rgb;
     #if USE_EMISSIVE_MAP
-        emissiveScaleColor = texture(emissiveMap, TEXTURE_UV);
-        emissiveScaleColor.rgb = SRGBToLinear(emissiveScaleColor.rgb);
-        emissiveScale = 1.0;
+        emissiveColor.rgb = SRGBToLinear(texture(emissiveMap, TEXTURE_UV).rgb);
     #endif
-    s.emissive *= emissiveScale;
-    s.emissive *= emissiveScaleColor.rgb;
+    //emissive color scale
+    vec4 emissiveScaleColor = emissiveScale;
+    #if USE_EMISSIVESCALE_MAP
+        emissiveScaleColor = texture(emissiveScaleMap, TEXTURE_UV);
+        emissiveScaleColor.rgb = SRGBToLinear(emissiveScaleColor.rgb);
+    #endif
+    emissiveColor.rgb *= emissiveScaleColor.rgb;
+    s.emissive = emissiveColor.rgb;
   }
 
   CC_STANDARD_SURFACE_ENTRY()
