@@ -12,13 +12,13 @@ CCEffect %{
         baseMap:              { value: grey, target: albedoMap, editor: { displayName: BaseMap } }
         baseWeightMap:        { value: grey }
         baseWeight:           { value: 1.0 }
-        roughness:            { value: 0.8, editor: { slide: true, range: [0, 1.0], step: 0.001 } }
+        roughness:            { value: 1.0 }
         roughnessMap:         { value: grey }
-        metallic:             { value: 0.6, editor: { slide: true, range: [0, 1.0], step: 0.001 } }
+        metallic:             { value: 1.0 }
         metallicMap:          { value: grey }
-        occlusion:            { value: 1.0, editor: { slide: true, range: [0, 1.0], step: 0.001 } }
+        occlusion:            { value: 1.0 }
         occlusionMap:         { value: white }
-        transparency:         { value: 0.6, editor: { slide: true, range: [0, 1.0], step: 0.001 } }
+        transparency:         { value: 1.0 }
         transparencyMap:      { value: grey }
         transparencyColor:    { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { type: color } }
         transparencyColorMap: { value: grey }
@@ -27,8 +27,8 @@ CCEffect %{
         emissiveMap:          { value: grey }
         emissiveColor:        { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { type: color } }
         emissiveColorMap:     { value: grey }
-        
-        normalStrength:        { value: 1.0, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
+        opacity:              { value: 1.0}
+        normalStrength:       { value: 1.0, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
         normalMap:            { value: normal }
     - &forward-add
       vert: standard-vs
@@ -95,6 +95,7 @@ CCProgram shared-ubos %{
     float transparency;
     float normalStrength;
     float emissive;
+    float opacity;
   };
 }%
 
@@ -102,6 +103,7 @@ CCProgram standard-vs %{
   precision highp float;
   #include <input-standard>
   #include <cc-global>
+  #include <decode-base>
   #include <decode-base>
   #include <cc-local-batch>
   #include <shared-ubos>
@@ -299,6 +301,7 @@ CCProgram standard-fs %{
            metallicValue = metallicColor.METALLIC_CHANNEL;
        #endif
     #endif
+    s.specularIntensity = 0.5;
     s.metallic = metallicValue;
 
     float roughnessValue = roughness;
@@ -339,6 +342,10 @@ CCProgram standard-fs %{
         #endif
         baseColor.rgb = transparentRegionColor.rgb;
     }
+
+    #if USE_OPACITY
+        baseColor.a = opacity;
+    #endif
 
 
   /////////////////////////////
@@ -398,6 +405,7 @@ CCProgram standard-fs %{
 CCProgram shadow-caster-vs %{
   precision highp float;
   #include <input-standard>
+  #include <decode-base>
   #include <decode-base>
   #include <cc-local-batch>
   #include <shared-ubos>
