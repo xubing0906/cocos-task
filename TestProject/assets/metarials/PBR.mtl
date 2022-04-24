@@ -7,9 +7,12 @@
     "__uuid__": "b646b4ea-c821-48c1-a59a-1d6a259545b6",
     "__expectedType__": "cc.EffectAsset"
   },
-  "_techIdx": "1",
+  "_techIdx": "0",
   "_defines": [
-    {},
+    {
+      "USE_ALPHA_TEST": true,
+      "ALPHA_TEST_CHANNEL": "a"
+    },
     {},
     {}
   ],
@@ -44,33 +47,12 @@
   ],
   "_props": [
     {
-      "emissiveScale": {
-        "__type__": "cc.Vec4",
-        "x": 1,
-        "y": 0,
-        "z": 0,
-        "w": 1
-      },
-      "emissiveScaleMap": {
-        "__uuid__": "bff9c797-67c9-40a6-a18d-0239b5499e77@6c48a",
-        "__expectedType__": "cc.Texture2D"
-      },
-      "emissive": {
-        "__type__": "cc.Color",
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 255
-      },
-      "emissiveMap": {
-        "__uuid__": "2168afc5-08fe-4e8f-8bc3-7c71b2711f88@6c48a",
-        "__expectedType__": "cc.Texture2D"
-      },
-      "opacity": 0,
-      "opacityMap": {
+      "alphaSource": 0.736,
+      "alphaSourceMap": {
         "__uuid__": "d94ae8f7-28bc-4ee9-825b-ee6da1fb1a9a@6c48a",
         "__expectedType__": "cc.Texture2D"
-      }
+      },
+      "alphaThreshold": 0.769
     },
     {},
     {}
