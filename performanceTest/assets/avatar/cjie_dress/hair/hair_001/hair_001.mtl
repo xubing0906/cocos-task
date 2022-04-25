@@ -1,0 +1,84 @@
+{
+  "__type__": "cc.Material",
+  "_name": "",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "88bdb6b2-3fa6-4231-98f5-ba3ad530b11e",
+    "__expectedType__": "cc.EffectAsset"
+  },
+  "_techIdx": "0",
+  "_defines": [
+    {
+      "USE_ALBEDO_MAP": true,
+      "USE_ALPHA_TEST": true
+    },
+    {
+      "USE_EDGE_PASS_FRONT": true,
+      "USE_ALBEDO_MAP": true,
+      "USE_ALPHA_TEST": true
+    },
+    {},
+    {},
+    {}
+  ],
+  "_states": [
+    {
+      "rasterizerState": {
+        "cullMode": 0
+      },
+      "depthStencilState": {},
+      "blendState": {
+        "targets": [
+          {}
+        ]
+      }
+    },
+    {
+      "rasterizerState": {
+        "cullMode": 0
+      },
+      "depthStencilState": {},
+      "blendState": {
+        "targets": [
+          {}
+        ]
+      }
+    },
+    {},
+    {},
+    {}
+  ],
+  "_props": [
+    {
+      "alphaThreshold": 0.8,
+      "roughness": 1,
+      "metallic": 0,
+      "SpecularIntensity": 0,
+      "mainTexture": {
+        "__uuid__": "e9ba2d46-91d4-4561-9ea8-b9baf9b381e3@6c48a",
+        "__expectedType__": "cc.Texture2D"
+      },
+      "anisoJitter": {
+        "__type__": "cc.Vec2",
+        "x": 1,
+        "y": -2
+      },
+      "anisoAOStrength": 0,
+      "hairSpecMOffset": 5
+    },
+    {
+      "alphaThreshold": 0.8,
+      "roughness": 0.5,
+      "metallic": 0,
+      "SpecularIntensity": 0,
+      "mainTexture": {
+        "__uuid__": "e9ba2d46-91d4-4561-9ea8-b9baf9b381e3@6c48a",
+        "__expectedType__": "cc.Texture2D"
+      }
+    },
+    {},
+    {},
+    {}
+  ]
+}

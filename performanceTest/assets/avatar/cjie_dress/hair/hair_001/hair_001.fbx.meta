@@ -1,0 +1,129 @@
+{
+  "ver": "2.1.10",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88",
+  "files": [],
+  "subMetas": {
+    "92fe7": {
+      "importer": "gltf-mesh",
+      "uuid": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@92fe7",
+      "displayName": "",
+      "id": "92fe7",
+      "name": "hair_mesh_001.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "438fe": {
+      "importer": "gltf-skeleton",
+      "uuid": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@438fe",
+      "displayName": "",
+      "id": "438fe",
+      "name": "UnnamedSkeleton.skeleton",
+      "userData": {
+        "gltfIndex": 0,
+        "jointsLength": 47
+      },
+      "ver": "1.0.1",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "a2266": {
+      "importer": "gltf-embeded-image",
+      "uuid": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@a2266",
+      "displayName": "",
+      "id": "a2266",
+      "name": "贴图 $7.image",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".png",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "76cec": {
+      "importer": "texture",
+      "uuid": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@76cec",
+      "displayName": "",
+      "id": "76cec",
+      "name": "贴图 $7.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@a2266"
+      },
+      "ver": "1.0.21",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "1c68b": {
+      "importer": "gltf-scene",
+      "uuid": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@1c68b",
+      "displayName": "",
+      "id": "1c68b",
+      "name": "hair_001.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "贴图 $7",
+        "uri": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@a2266"
+      }
+    ],
+    "legacyFbxImporter": false,
+    "redirect": "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@1c68b",
+    "assetFinder": {
+      "meshes": [
+        "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@92fe7"
+      ],
+      "skeletons": [
+        "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@438fe"
+      ],
+      "textures": [
+        "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@76cec"
+      ],
+      "materials": [
+        "da3f6890-e1f2-43d5-9d9d-7af930083052"
+      ],
+      "scenes": [
+        "2438bec5-38a8-4c05-b56d-00c9e0ed8a88@1c68b"
+      ]
+    },
+    "useVertexColors": false,
+    "dumpMaterials": true,
+    "materialDumpDir": "db://assets/avatar/cjie_dress/hair/hair_001"
+  }
+}

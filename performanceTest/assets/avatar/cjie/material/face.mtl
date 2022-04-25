@@ -1,0 +1,103 @@
+{
+  "__type__": "cc.Material",
+  "_name": "",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "aa170877-2a8c-4976-846f-31890f8dcf0f",
+    "__expectedType__": "cc.EffectAsset"
+  },
+  "_techIdx": "0",
+  "_defines": [
+    {
+      "USE_NORMAL_MAP": true,
+      "USE_ALBEDO_MAP": true,
+      "USE_PBR_MAP": true,
+      "USE_MAKE_UP": true
+    },
+    {},
+    {}
+  ],
+  "_states": [
+    {
+      "rasterizerState": {},
+      "depthStencilState": {},
+      "blendState": {
+        "targets": [
+          {}
+        ]
+      }
+    },
+    {},
+    {}
+  ],
+  "_props": [
+    {
+      "roughness": 1,
+      "metallic": 0,
+      "SpecularIntensity": 0,
+      "normalStrenth": 0.8,
+      "mainTexture": {
+        "__uuid__": "63b53120-14de-44d4-9642-6481be76c859@6c48a",
+        "__expectedType__": "cc.Texture2D"
+      },
+      "normalMap": {
+        "__uuid__": "242d0ad1-2f11-44b4-abd7-e52863a5eb59@6c48a",
+        "__expectedType__": "cc.Texture2D"
+      },
+      "pbrMap": {
+        "__uuid__": "950944bf-177b-426d-bc53-91c209694819@6c48a",
+        "__expectedType__": "cc.Texture2D"
+      },
+      "blushBounding": {
+        "__type__": "cc.Vec4",
+        "x": 0.196777,
+        "y": 0.462402,
+        "z": 0.801513,
+        "w": 0.669677
+      },
+      "facepaintBounding": {
+        "__type__": "cc.Vec4",
+        "x": 0.156982,
+        "y": 0.20874,
+        "z": 0.843017,
+        "w": 0.821533
+      },
+      "eyeShadowBounding": {
+        "__type__": "cc.Vec4",
+        "x": 0.276855,
+        "y": 0.369628,
+        "z": 0.724121,
+        "w": 0.494628
+      },
+      "eyelinerBounding": {
+        "__type__": "cc.Vec4",
+        "x": 0.276855,
+        "y": 0.369628,
+        "z": 0.724121,
+        "w": 0.494628
+      },
+      "lipBounding": {
+        "__type__": "cc.Vec4",
+        "x": 0.449218,
+        "y": 0.558838,
+        "z": 0.55249,
+        "w": 0.625
+      },
+      "eyebrowEnable": 1,
+      "eyebrowTexture": {
+        "__uuid__": "a6874ec9-01c5-4c84-b913-b53639b8e249@6c48a",
+        "__expectedType__": "cc.Texture2D"
+      },
+      "eyebrowBounding": {
+        "__type__": "cc.Vec4",
+        "x": 0.224365,
+        "y": 0.305664,
+        "z": 0.758544,
+        "w": 0.479492
+      }
+    },
+    {},
+    {}
+  ]
+}

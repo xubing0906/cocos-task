@@ -1,0 +1,117 @@
+2022-04-25 17:55:23-log: [Package] menu@1.0.0 enable
+2022-04-25 17:55:23-log: [Package] profile@1.0.0 enable
+2022-04-25 17:55:23-log: [Package] project@1.0.1 enable
+2022-04-25 17:55:23-log: [Package] messages@1.0.0 enable
+2022-04-25 17:55:23-log: [Package] program@1.0.0 enable
+2022-04-25 17:55:23-log: [Package] device@1.0.1 enable
+2022-04-25 17:55:23-log: [Package] ui-kit@1.0.1 enable
+2022-04-25 17:55:23-log: [Package] tester@1.0.0 enable
+2022-04-25 17:55:23-log: [Package] preferences@1.0.0 enable
+2022-04-25 17:55:24-log: Setup mods mgr.: 209.613ms
+2022-04-25 17:55:24-log: Profile changed: engine (modules.includeModules: 2d,3d,audio,base,dragon-bones,gfx-webgl,gfx-webgl2,intersection-2d,marionette,particle,particle-2d,physics-2d-box2d,physics-ammo,primitive,profiler,spine,terrain,tiled-map,tween,ui,video,webview)
+2022-04-25 17:55:24-log: [Package] engine@1.0.5 enable
+2022-04-25 17:55:25-log: [Package] programming@1.0.0 enable
+2022-04-25 17:55:25-log: [Package] engine-extends@1.0.0 enable
+2022-04-25 17:55:25-log: [Package] asset-db@1.0.0 enable
+2022-04-25 17:55:25-log: [Package] console@1.0.0 enable
+2022-04-25 17:55:26-log: [Package] scene@1.0.0 enable
+2022-04-25 17:55:26-log: [Package] server@1.0.0 enable
+2022-04-25 17:55:26-log: [Package] utils@1.0.0 enable
+2022-04-25 17:55:26-log: [Package] assets@1.0.0 enable
+2022-04-25 17:55:26-log: [Package] inspector@1.0.0 enable
+2022-04-25 17:55:26-log: [Package] hierarchy@1.0.0 enable
+2022-04-25 17:55:27-log: [Package] preview@1.0.1 enable
+2022-04-25 17:55:27-log: [Package] animator@1.0.0 enable
+2022-04-25 17:55:27-log: [Package] builder@1.3.1 enable
+2022-04-25 17:55:27-log: [Package] node-library@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] shortcuts@1.0.1 enable
+2022-04-25 17:55:28-log: [Package] package-asset@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] reference-image@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] animation-graph@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] channel-upload-tools@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] runtime-dev-tools@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] lightmap@1.0.4 enable
+2022-04-25 17:55:28-log: [Package] alipay-mini-game@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] android@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] baidu-mini-game@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] bytedance-mini-game@1.0.1 enable
+2022-04-25 17:55:28-log: [Package] huawei-agc@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] ios@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] ios-app-clip@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] mac@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] native@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] ohos@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] web-desktop@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] web-mobile@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] wechatgame@1.0.1 enable
+2022-04-25 17:55:28-log: [Package] windows@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] xiaomi-quick-game@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] cocos-play@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] huawei-quick-game@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] link-sure@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] oppo-mini-game@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] qtt@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] vivo-mini-game@1.0.0 enable
+2022-04-25 17:55:28-log: [Package] cocos-service@3.0.2 enable
+2022-04-25 17:55:28-log: [Package] importer@1.0.0 enable
+2022-04-25 17:55:29-log: [Package] extension@3.0.15 enable
+2022-04-25 17:55:29-log: [Im-plugin] Check im-plugin version.
+2022-04-25 17:55:29-log: [Package] im-plugin@3.0.8 enable
+2022-04-25 17:55:29-log: [Im-plugin] No online info of im-plugin.
+2022-04-25 17:55:36-warn: [Asset DB] 材质 [face_eyeball] 的 [Transparent color] 属性不允许是贴图。 [{asset(3e4bec32-3bc0-4cb4-b5d2-8a380402eea1)}]
+2022-04-25 17:55:42-warn: Browserslist: caniuse-lite is outdated. Please run:
+npx browserslist@latest --update-db
+
+Why you should do it regularly:
+https://github.com/browserslist/browserslist#browsers-data-updating
+2022-04-25 17:55:43-log: [Scene] Cocos Creator v3.4.2
+2022-04-25 17:55:43-info: [Scene] Forward render pipeline initialized.
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:55:49-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:56:08-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:56:08-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:56:08-warn: [Scene] Node "cjie2" has no path "root/footsteps".
+2022-04-25 17:56:39-warn: [Scene] Node "cjie2" has no path "root/footsteps".

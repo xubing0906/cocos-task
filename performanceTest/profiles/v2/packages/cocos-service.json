@@ -1,0 +1,16 @@
+{
+  "options": {
+    "web-desktop": {
+      "configID": "c6430f",
+      "services": []
+    },
+    "web-mobile": {
+      "configID": "c6430f",
+      "services": []
+    }
+  },
+  "builder-options": {
+    "configID": "c6430f",
+    "services": []
+  }
+}

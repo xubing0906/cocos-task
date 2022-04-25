@@ -1,0 +1,17 @@
+{
+  "ver": "1.1.0",
+  "importer": "directory",
+  "imported": true,
+  "uuid": "857c2b61-73cf-4a38-82af-4c6d2713e2ae",
+  "files": [],
+  "subMetas": {},
+  "userData": {
+    "compressionType": {
+      "cocos-runtime": "subpackage"
+    },
+    "isRemoteBundle": {
+      "cocos-runtime": false
+    },
+    "isBundle": true
+  }
+}

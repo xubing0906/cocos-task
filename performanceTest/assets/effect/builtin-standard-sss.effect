@@ -1,0 +1,661 @@
+// Copyright (c) 2017-2020 Xiamen Yaji Software Co., Ltd.
+
+CCEffect %{
+  techniques:
+  - name: opaque
+    passes:
+    - vert: standard-vs
+      frag: standard-fs
+      properties: &props
+        tilingOffset:   { value: [1.0, 1.0, 0.0, 0.0] }
+        mainColor:      { value: [1.0, 1.0, 1.0, 1.0], target: albedo, editor: { displayName: Albedo, type: color } }
+        albedoScale:    { value: [1.0, 1.0, 1.0], target: albedoScaleAndCutoff.xyz }
+        alphaThreshold: { value: 0.5, target: albedoScaleAndCutoff.w, editor: { parent: USE_ALPHA_TEST, slide: true, range: [0, 1.0], step: 0.001 } }
+        occlusion:      { value: 1.0, target: pbrParams.x, editor: { slide: true, range: [0, 1.0], step: 0.001 }  }
+        roughness:      { value: 0.8, target: pbrParams.y, editor: { slide: true, range: [0, 1.0], step: 0.001 }  }
+        metallic:       { value: 0.6, target: pbrParams.z, editor: { slide: true, range: [0, 1.0], step: 0.001 } }
+        SpecularIntensity:  { value: 0.5, target: pbrParams.w, editor: {  slide: true, range: [0.0, 1.0], step: 0.001 } }
+        normalStrenth:  { value: 1.0, target: miscParams.x, editor: { parent: USE_NORMAL_MAP, slide: true, range: [0, 1.0], step: 0.001 } }
+        emissive:       { value: [0.0, 0.0, 0.0, 1.0], editor: { type: color } }
+        emissiveScale:  { value: [1.0, 1.0, 1.0], target: emissiveScaleParam.xyz }
+        mainTexture:    { value: grey, target: albedoMap, editor: { displayName: AlbedoMap } }
+        normalMap:      { value: normal       }
+        pbrMap:         { value: grey         }
+        metallicRoughnessMap: { value: grey   }
+        occlusionMap:   { value: white        }
+        emissiveMap:    { value: grey         }
+
+        thicknessMap:               { value: grey, editor: { displayName: Thickness Map } }
+        blurScale:                  { value: 0.5, editor: { slide: true, range: [0, 1.0], step: 0.001, displayName: Scattering Blur Scalar} }
+        thicknessStrength:          { value: 1.0, editor: { slide: true, range: [0, 100.0], step: 0.001, displayName: Thickness Scattering Strength} }
+        thicknessHard:              { value: 2.0, editor: { slide: true, range: [0.001, 10.0], step: 0.001, displayName: Thickness Map Hardness} }
+        thicknessAmt:               { value: 1.0, editor: { slide: true, range: [0, 100.0], step: 0.001, displayName: Thickness Scattering Amount} }
+
+        curvatureMap:               { value: grey, editor: { displayName: Curvature Map } }
+        curvatureStrength:          { value: 1.0, editor: { slide: true, range: [0, 100.0], step: 0.001, displayName: Curvature Scattering Strength} }
+        curvatureHard:              { value: 2.0, editor: { slide: true, range: [0.001, 1.0], step: 0.001, displayName: Curvature Map Hardness} }
+
+        scatteringScale:            { value: 1.0, editor: { slide: true, range: [0, 1.0], step: 0.001, displayName: Scattering Scale} }
+        scatteringOffset:           { value: 0.0, editor: { slide: true, range: [-1.0, 1.0], step: 0.001, displayName: Scattering Offset} }
+
+        diffuseOffset:              { value: 0.0, editor: { slide: true, range: [-2.0, 2.0], step: 0.001, displayName: Diffuse Profile Offset} }
+        
+        fresnelSpecularStrength:    { value: 1.0, editor: { slide: true, range: [0, 1.0], step: 0.001, displayName: Fresnel Specular Strength} }
+        fresnelRange:               { value: 1.0, editor: { slide: true, range: [0, 10.0], step: 0.001, displayName: Fresnel Range}}
+        roughnessGain:              { value: 1.0, editor: { slide: true, range: [-1.0, 1.0], step: 0.001, displayName: Fresnel Roughness Offset} }
+
+        blushEnable: {value: 0.0, editor: {parent: USE_MAKE_UP, slide: true, step: 1.0, range: [0.0, 1.0]}}
+        blushTexture:    { value: grey, editor: { parent: USE_MAKE_UP } }
+        blushBounding:    { value: [0.0, 0.0, 0.0, 0.0], editor: { parent: USE_MAKE_UP } }
+
+        faceEnable: {value: 0.0, editor: {parent: USE_MAKE_UP, slide: true, step: 1.0, range: [0.0, 1.0]}}
+        faceTexture:    { value: grey, editor: { parent: USE_MAKE_UP } }
+        faceBounding:    { value: [0.0, 0.0, 0.0, 0.0], editor: { parent: USE_MAKE_UP } }
+
+        eyeShadowEnable: {value: 0.0, editor: {parent: USE_MAKE_UP, slide: true, step: 1.0, range: [0.0, 1.0]}}
+        eyeShadowTexture:    { value: grey, editor: { parent: USE_MAKE_UP } }
+        eyeShadowBounding:    { value: [0.0, 0.0, 0.0, 0.0], editor: { parent: USE_MAKE_UP } }
+
+        eyeLinerEnable: {value: 0.0, editor: {parent: USE_MAKE_UP, slide: true, step: 1.0, range: [0.0, 1.0]}}
+        eyelinerTexture:    { value: grey, editor: { parent: USE_MAKE_UP } }
+        eyelinerBounding:    { value: [0.0, 0.0, 0.0, 0.0], editor: { parent: USE_MAKE_UP } }
+        
+        lipEnable: {value: 0.0, editor: {parent: USE_MAKE_UP, slide: true, step: 1.0, range: [0.0, 1.0]}}
+        lipTexture: { value: grey, editor: { parent: USE_MAKE_UP } }
+        lipBounding: { value: [0.0, 0.0, 0.0, 0.0], editor: { parent: USE_MAKE_UP } }
+        
+        beardEnable: {value: 0.0, editor: {parent: USE_MAKE_UP, slide: true, step: 1.0, range: [0.0, 1.0]}}
+        beardTexture: { value: grey, editor: { parent: USE_MAKE_UP } }
+        beardBounding: { value: [0.0, 0.0, 0.0, 0.0], editor: { parent: USE_MAKE_UP } }
+        
+      migrations:
+        properties:
+          pbrParams: { removeImmediately: true }
+    - &deferred
+      vert: standard-vs
+      frag: standard-fs
+      phase: deferred
+      propertyIndex: 0
+      blendState:
+        targets:
+        - blend: false
+        - blend: false
+        - blend: false
+        - blend: false
+      properties: *props
+    - &forward-add
+      vert: standard-vs
+      frag: standard-fs
+      phase: forward-add
+      propertyIndex: 0
+      embeddedMacros: { CC_FORWARD_ADD: true }
+      depthStencilState:
+        depthFunc: equal
+        depthTest: true
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: one
+          blendDst: one
+          blendSrcAlpha: zero
+          blendDstAlpha: one
+      properties: *props
+    - &shadow-caster
+      vert: shadow-caster-vs:vert
+      frag: shadow-caster-fs:frag
+      phase: shadow-caster
+      propertyIndex: 0
+      rasterizerState:
+        cullMode: front
+      properties:
+        tilingOffset:   { value: [1.0, 1.0, 0.0, 0.0] }
+        mainColor:      { value: [1.0, 1.0, 1.0, 1.0], target: albedo, editor: { displayName: Albedo, type: color } }
+        albedoScale:    { value: [1.0, 1.0, 1.0], target: albedoScaleAndCutoff.xyz }
+        alphaThreshold: { value: 0.5, target: albedoScaleAndCutoff.w, editor: { parent: USE_ALPHA_TEST } }
+        occlusion:      { value: 1.0, target: pbrParams.x }
+        roughness:      { value: 0.8, target: pbrParams.y }
+        metallic:       { value: 0.6, target: pbrParams.z }
+        normalStrenth:  { value: 1.0, target: pbrParams.w, editor: { parent: USE_NORMAL_MAP } }
+        emissive:       { value: [0.0, 0.0, 0.0, 1.0], editor: { type: color } }
+        emissiveScale:  { value: [1.0, 1.0, 1.0], target: emissiveScaleParam.xyz }
+        mainTexture:    { value: grey, target: albedoMap, editor: { displayName: AlbedoMap } }
+  - name: transparent
+    passes:
+    - vert: standard-vs
+      frag: standard-fs
+      embeddedMacros: { CC_FORCE_FORWARD_SHADING: true }
+      depthStencilState:
+        depthTest: true
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      properties: *props
+    - *forward-add
+    - *shadow-caster
+}%
+
+
+
+
+
+CCProgram shared-ubos %{
+  uniform Constants {
+    vec4 tilingOffset;
+    vec4 albedo;
+    vec4 albedoScaleAndCutoff;
+    vec4 pbrParams;
+    vec4 miscParams;
+    vec4 emissive;
+    vec4 emissiveScaleParam;
+
+    vec4 blushBounding;
+    vec4 faceBounding;
+    vec4 eyeShadowBounding;
+    vec4 eyelinerBounding;
+    vec4 lipBounding;
+    vec4 beardBounding;
+
+    float blurScale;
+    float thicknessStrength;
+    float thicknessHard;
+    float thicknessAmt;
+    float curvatureStrength;
+    float curvatureHard;
+
+    float scatteringScale;
+    float scatteringOffset;
+
+    float diffuseOffset;
+
+    float fresnelSpecularStrength;
+    float fresnelRange;
+    float roughnessGain;
+
+    float blushEnable;
+    float faceEnable;
+    float eyeShadowEnable;
+    float eyeLinerEnable;
+    float lipEnable;
+    float beardEnable;
+
+  };
+}%
+
+
+
+
+
+CCProgram standard-vs %{
+  precision highp float;
+  #include <input-standard>
+  #include <cc-global>
+  #include <cc-local-batch>
+  #include <shared-ubos>
+  #include <cc-fog-vs>
+  #include <cc-shadow-map-vs>
+
+  #if USE_VERTEX_COLOR
+    in vec4 a_color;
+    out vec4 v_color;
+  #endif
+
+  out vec3 v_position;
+  out vec3 v_normal;
+  out vec2 v_uv;
+  out vec2 v_uv1;
+
+  out vec4 v_normal_cam;
+
+  #if USE_NORMAL_MAP
+    out vec3 v_tangent;
+    out vec3 v_bitangent;
+  #endif
+
+  #if HAS_SECOND_UV || USE_LIGHTMAP
+    in vec2 a_texCoord1;
+  #endif
+
+  #if USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
+    #include <lightingmap-vs>
+  #endif
+
+
+
+
+
+  void main () {
+    StandardVertInput In;
+    CCVertInput(In);
+
+    mat4 matWorld, matWorldIT;
+    CCGetWorldMatrixFull(matWorld, matWorldIT);
+
+    vec4 pos = matWorld * In.position;
+
+    v_position = pos.xyz;
+    v_normal = normalize((matWorldIT * vec4(In.normal, 0.0)).xyz);
+    #if USE_NORMAL_MAP
+      v_tangent = normalize((matWorld * vec4(In.tangent.xyz, 0.0)).xyz);
+      v_bitangent = cross(v_normal, v_tangent) * In.tangent.w; // note the cross order
+    #endif
+
+    v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
+    #if SAMPLE_FROM_RT
+      CC_HANDLE_RT_SAMPLE_FLIP(v_uv);
+    #endif
+    #if HAS_SECOND_UV
+      v_uv1 = a_texCoord1 * tilingOffset.xy + tilingOffset.zw;
+      #if SAMPLE_FROM_RT
+        CC_HANDLE_RT_SAMPLE_FLIP(v_uv1);
+      #endif
+    #endif
+
+    #if USE_VERTEX_COLOR
+      v_color = a_color;
+    #endif
+
+    CC_TRANSFER_FOG(pos);
+    CC_TRANSFER_SHADOW(pos);
+
+    #if USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
+      CCLightingMapCaclUV();
+    #endif
+
+    v_normal_cam = normalize(cc_matView * vec4(v_normal, 0.0));
+
+    gl_Position = cc_matProj * (cc_matView * matWorld) * In.position;
+  }
+}%
+
+
+
+
+
+CCProgram standard-fs %{
+  precision highp float;
+  #include <cc-global>
+  #include <shared-ubos>
+  #include <cc-fog-fs>
+  #include <standard-surface-entry>
+  #if USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
+    #include <lightingmap-fs>
+  #endif
+
+  in vec3 v_position;
+  in vec2 v_uv;
+  in vec2 v_uv1;
+  in vec3 v_normal;
+
+  in vec4 v_normal_cam;
+
+  vec4 gaussianBlur( sampler2D imgD, float sca ) {
+    float gOffset[5];
+    gOffset[0] = 0.0;
+    gOffset[1] = 1.0;
+    gOffset[2] = 2.0;
+    gOffset[3] = 3.0;
+    gOffset[4] = 4.0;
+
+    float gWeight[5];
+    gWeight[0] = 0.2270270270;
+    gWeight[1] = 0.1945945946;
+    gWeight[2] = 0.1216216216;
+    gWeight[3] = 0.0540540541;
+    gWeight[4] = 0.0162162162;
+
+    vec3 baseD = SRGBToLinear(texture(imgD, v_uv).rgb);
+
+    for( int i = 0; i < 5; i++ ){
+        baseD += SRGBToLinear(texture(imgD, v_uv + vec2(gOffset[i] / 100.0 * sca, 0.0)).rgb) * gWeight[i];
+        baseD += SRGBToLinear(texture(imgD, v_uv - vec2(gOffset[i] / 100.0 * sca, 0.0)).rgb) * gWeight[i];
+        baseD += SRGBToLinear(texture(imgD, v_uv + vec2(0.0, gOffset[i] / 100.0 * sca)).rgb) * gWeight[i];
+        baseD += SRGBToLinear(texture(imgD, v_uv - vec2(0.0, gOffset[i] / 100.0 * sca)).rgb) * gWeight[i];
+    }
+
+    return vec4(baseD / 5.0, 0.0);
+  }
+
+  #define M_PI 3.1415926535897932384626433832795
+  vec3 Profile( float sca ){  
+    return  vec3(0.233, 0.455, 0.649) * 1.0 / (abs(sqrt(0.0064)) * abs(sqrt(2.0 * M_PI))) * exp( -sca * sca / (2.0 * 0.0064)) +
+            vec3(0.1, 0.366, 0.344) * 1.0 / (abs(sqrt(0.0484)) * abs(sqrt(2.0 * M_PI))) * exp( -sca * sca / (2.0 * 0.0484)) +
+            vec3(0.118, 0.198, 0.0) * 1.0 / (abs(sqrt(0.187)) * abs(sqrt(2.0 * M_PI))) * exp( -sca * sca / (2.0 * 0.187)) +
+            vec3(0.113, 0.007, 0.007) * 1.0 / (abs(sqrt(0.567)) * abs(sqrt(2.0 * M_PI))) * exp( -sca * sca / (2.0 * 0.567)) +
+            vec3(0.358, 0.004, 0.0) * 1.0 / (abs(sqrt(1.99)) * abs(sqrt(2.0 * M_PI))) * exp( -sca * sca / (2.0 * 1.99)) +
+            vec3(0.078, 0.0, 0.0) * 1.0 / (abs(sqrt(7.41)) * abs(sqrt(2.0 * M_PI))) * exp( -sca * sca / (2.0 * 7.41));
+  }
+
+  vec4 getMakeupColor (vec2 uv, vec4 bounding, sampler2D makeupTexture) {
+    // vec4 maskColor = texture(maskMap, ALBEDO_UV);
+    // if (maskColor.r > 0.0) {
+    //   return texture(texMakeup, vec2(maskColor.g / 100.0, maskColor.b / 100.0));
+    // }
+
+
+    if (uv.x > bounding.x && uv.x < bounding.z && uv.y > bounding.y && uv.y < bounding.w) {
+        float offsetX = uv.x - bounding.x;
+        float offsetY = uv.y - bounding.y;
+
+        float width = bounding.z - bounding.x;
+        float height = bounding.w - bounding.y;
+
+        vec4 newColor = texture(makeupTexture, vec2(offsetX / width, offsetY / height));
+
+        return newColor;
+    }
+
+    return vec4(0.0, 0.0, 0.0, 0.0);
+  }
+
+
+  #if USE_VERTEX_COLOR
+    in vec4 v_color;
+  #endif
+
+  #if USE_ALBEDO_MAP
+    uniform sampler2D albedoMap;
+    #pragma define ALBEDO_UV options([v_uv, v_uv1])
+  #endif
+
+  #if USE_NORMAL_MAP
+    in vec3 v_tangent;
+    in vec3 v_bitangent;
+    uniform sampler2D normalMap;
+    #pragma define NORMAL_UV options([v_uv, v_uv1])
+  #endif
+
+  #pragma define PBR_UV options([v_uv, v_uv1])
+  #if USE_PBR_MAP
+    uniform sampler2D pbrMap;
+  #endif
+
+  #if USE_METALLIC_ROUGHNESS_MAP
+    uniform sampler2D metallicRoughnessMap;
+  #endif
+
+  #if USE_OCCLUSION_MAP
+    uniform sampler2D occlusionMap;
+  #endif
+
+  #if USE_EMISSIVE_MAP
+    uniform sampler2D emissiveMap;
+    #pragma define EMISSIVE_UV options([v_uv, v_uv1])
+  #endif
+
+  #define OCCLUSION_CHANNEL r
+  #define ROUGHNESS_CHANNEL g
+  #define METALLIC_CHANNEL  b
+  #define SPECULARINTENSITY_CHANNEL w
+
+
+  #if USE_ALPHA_TEST
+    #pragma define ALPHA_TEST_CHANNEL options([a, r])
+  #endif
+
+  #if USE_SSS
+    uniform sampler2D thicknessMap;
+    uniform sampler2D curvatureMap;
+  #endif
+
+  #if USE_MAKE_UP
+    uniform sampler2D blushTexture;
+    uniform sampler2D faceTexture;
+    uniform sampler2D eyeShadowTexture;
+    uniform sampler2D eyelinerTexture;
+    uniform sampler2D lipTexture;
+    uniform sampler2D beardTexture;
+  #endif
+
+
+  void surf (out StandardSurface s) {
+    vec4 baseColor = albedo;
+
+
+    #if USE_VERTEX_COLOR
+      baseColor.rgb *= SRGBToLinear(v_color.rgb);//use linear
+      baseColor.a *= v_color.a;
+    #endif
+
+    #if USE_ALBEDO_MAP
+      vec4 texColor = texture(albedoMap, ALBEDO_UV);
+      texColor.rgb = SRGBToLinear(texColor.rgb);
+      baseColor *= texColor;
+    #endif
+
+    s.albedo = baseColor;
+    s.albedo.rgb *= albedoScaleAndCutoff.xyz;
+
+    #if USE_ALPHA_TEST
+      if (s.albedo.ALPHA_TEST_CHANNEL < albedoScaleAndCutoff.w) discard;
+    #endif
+
+    #if USE_MAKE_UP
+      vec4 newColor = vec4(0,0,0,0);
+      
+      
+      if (blushEnable > 0.0) {
+          //腮红 
+          newColor = getMakeupColor(ALBEDO_UV, blushBounding, blushTexture);
+
+          if (newColor.a > 0.0) {
+            // s.albedo.rgb = newColor.rgb * newColor.a + s.albedo.rgb * (1.0-newColor.a);
+            s.albedo.rgb = mix(s.albedo.rgb, newColor.rgb, newColor.a);
+          } 
+      }
+      
+      if (newColor.a <= 0.0 && faceEnable > 0.0) {
+          //面部彩绘
+          newColor = getMakeupColor(ALBEDO_UV, faceBounding, faceTexture);
+
+          if (newColor.a > 0.0) {
+            s.albedo.rgb = mix(s.albedo.rgb, newColor.rgb, newColor.a);
+          }
+      }
+
+      if (newColor.a <= 0.0 && eyeShadowEnable > 0.0) {
+          //眼影
+          newColor = getMakeupColor(ALBEDO_UV, eyeShadowBounding, eyeShadowTexture);
+
+          if (newColor.a > 0.0) {
+            s.albedo.rgb = mix(s.albedo.rgb, newColor.rgb, newColor.a);
+          }
+      }
+
+      if (newColor.a <= 0.0 && eyeLinerEnable > 0.0) {
+          //眼线
+          newColor = getMakeupColor(ALBEDO_UV, eyelinerBounding, eyelinerTexture);
+
+          if (newColor.a > 0.0) {
+            s.albedo.rgb = mix(s.albedo.rgb, newColor.rgb, newColor.a);
+          }
+      }
+
+      if (newColor.a <= 0.0 && lipEnable > 0.0) {
+          //嘴唇
+          newColor = getMakeupColor(ALBEDO_UV, lipBounding, lipTexture);
+
+          if (newColor.a > 0.0) {
+            s.albedo.rgb = mix(s.albedo.rgb, newColor.rgb, newColor.a);
+          }
+      }
+
+      if (newColor.a <= 0.0 && beardEnable > 0.0) {
+          //胡须
+          newColor = getMakeupColor(ALBEDO_UV, beardBounding, beardTexture);
+
+          if (newColor.a > 0.0) {
+            s.albedo.rgb = mix(s.albedo.rgb, newColor.rgb, newColor.a);
+          }
+      }
+    #endif
+
+    #if USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
+      vec4 lightColor = texture(cc_lightingMap, v_luv.xy);
+      s.lightmap = UnpackLightingmap(lightColor);
+      s.lightmap_test = v_luv.z; /*u scale*/
+    #endif
+
+    s.normal = v_normal;
+    #if USE_NORMAL_MAP
+      vec3 nmmp = texture(normalMap, NORMAL_UV).xyz - vec3(0.5);
+      s.normal = (nmmp.x * miscParams.x) * normalize(v_tangent) +
+                 (nmmp.y * miscParams.x) * normalize(v_bitangent) +
+                  nmmp.z * normalize(s.normal);
+    #endif
+
+    s.position = v_position;
+
+    vec4 pbr = pbrParams;
+    #if USE_PBR_MAP
+      vec4 res = texture(pbrMap, PBR_UV);
+      pbr.x *= res.OCCLUSION_CHANNEL;
+      pbr.y *= res.ROUGHNESS_CHANNEL;
+      pbr.z *= res.METALLIC_CHANNEL;
+      pbr.w *= res.SPECULARINTENSITY_CHANNEL;
+    #endif
+
+    #if USE_METALLIC_ROUGHNESS_MAP
+      vec4 metallicRoughness = texture(metallicRoughnessMap, PBR_UV);
+      pbr.z *= metallicRoughness.METALLIC_CHANNEL;
+      pbr.y *= metallicRoughness.ROUGHNESS_CHANNEL;
+    #endif
+    #if USE_OCCLUSION_MAP
+      pbr.x *= texture(occlusionMap, PBR_UV).OCCLUSION_CHANNEL;
+    #endif
+
+    s.occlusion = clamp(pbr.x, 0.0, 0.96);
+
+    float rimDot = dot(vec3(0.0, 0.0, 1.0), normalize(v_normal_cam).xyz);
+    float rimIndex = clamp(pow((1.0 - rimDot) * fresnelSpecularStrength, fresnelRange), 0.0, 1.0);
+
+    pbr.y += roughnessGain * rimIndex;
+    s.roughness = clamp(pbr.y, 0.04, 1.0);
+    s.metallic = pbr.z;
+
+    s.emissive = emissive.rgb * emissiveScaleParam.xyz;
+    #if USE_EMISSIVE_MAP
+      s.emissive *= SRGBToLinear(texture(emissiveMap, EMISSIVE_UV).rgb);
+    #endif
+    
+    #if USE_SSS
+
+    float scatterDot = dot(normalize(cc_mainLitDir * -1.0).xyz, normalize(v_normal).xyz);
+    float scatterIndex = clamp(scatterDot * scatteringScale + scatteringOffset, 0.0, 1.0);
+
+    vec4 bDiffuse = gaussianBlur(albedoMap, blurScale);
+    vec4 bDepth = gaussianBlur(thicknessMap, 0.0);
+    vec3 curvatureM = SRGBToLinear(texture(curvatureMap, v_uv).rgb);
+    float deltaDepth = pow(abs(SRGBToLinear(texture(thicknessMap, v_uv).rgb).x - bDepth.x) * thicknessStrength, thicknessHard);
+    
+    vec3 sssColor = Profile(length(v_position + diffuseOffset) * pow(curvatureM.x * (1.0 / curvatureStrength * 1000.0), curvatureHard)) * 
+                    cc_mainLitColor.rgb * min(cc_mainLitColor.w, 0.75) * s.albedo.rgb;
+    float thickMask = mix(deltaDepth * thicknessAmt, 0.0, scatterIndex);
+
+    vec3 sssGain = mix(sssColor * 0.5, sssColor, thickMask); 
+                     
+    s.albedo = (s.albedo + bDiffuse) / 2.0;
+
+    s.emissive += sssGain;
+    #endif
+  }
+
+  CC_STANDARD_SURFACE_ENTRY()
+}%
+
+
+
+
+
+CCProgram shadow-caster-vs %{
+  precision highp float;
+  #include <input-standard>
+  #include <cc-local-batch>
+  #include <shared-ubos>
+  #include <cc-shadow>
+
+  #if HAS_SECOND_UV || USE_LIGHTMAP
+    in vec2 a_texCoord1;
+  #endif
+
+  out vec2 v_uv;
+  out vec2 v_uv1;
+  out vec4 v_worldPos;
+
+  out float v_clip_depth;
+
+  vec4 vert () {
+    StandardVertInput In;
+    CCVertInput(In);
+
+    mat4 matWorld, matWorldIT;
+    CCGetWorldMatrixFull(matWorld, matWorldIT);
+
+    v_worldPos = matWorld * In.position;
+    vec4 clipPos = cc_matLightViewProj * v_worldPos;
+
+    v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
+    #if HAS_SECOND_UV
+      v_uv1 = a_texCoord1 * tilingOffset.xy + tilingOffset.zw;
+    #endif
+
+    v_clip_depth = clipPos.z / clipPos.w * 0.5 + 0.5;
+
+    return clipPos;
+  }
+}%
+
+CCProgram shadow-caster-fs %{
+  precision highp float;
+  #include <shared-ubos>
+  #include <packing>
+  #include <cc-shadow>
+
+  in vec2 v_uv;
+  in vec2 v_uv1;
+  in vec4 v_worldPos;
+  in float v_clip_depth;
+
+  #if USE_ALBEDO_MAP
+    uniform sampler2D albedoMap;
+    #pragma define ALBEDO_UV options([v_uv, v_uv1])
+  #endif
+
+  #if USE_ALPHA_TEST
+    #pragma define ALPHA_TEST_CHANNEL options([a, r])
+  #endif
+
+  vec4 frag () {
+    vec4 baseColor = albedo;
+
+    #if USE_ALBEDO_MAP
+      baseColor *= texture(albedoMap, ALBEDO_UV);
+    #endif
+
+    #if USE_ALPHA_TEST
+      if (baseColor.ALPHA_TEST_CHANNEL < albedoScaleAndCutoff.w) discard;
+    #endif
+
+    // spot use linear
+    if(cc_shadowLPNNInfo.x > 0.000001 && cc_shadowLPNNInfo.x < 1.999999) {
+      // enabled linear depth
+      if (cc_shadowNFLSInfo.z > 0.000001) {
+        vec4 viewStartPos = cc_matLightView * v_worldPos;
+        float dist = length(viewStartPos.xyz);
+        float linearDepth = cc_shadowNFLSInfo.x + (-dist / (cc_shadowNFLSInfo.y - cc_shadowNFLSInfo.x));
+
+        return vec4(linearDepth, 1.0, 1.0, 1.0);
+      }
+    }
+
+    if (cc_shadowLPNNInfo.y > 0.000001) {
+      return packDepthToRGBA(v_clip_depth);
+    }
+  
+    return vec4(v_clip_depth, 1.0, 1.0, 1.0);
+  }
+}%
