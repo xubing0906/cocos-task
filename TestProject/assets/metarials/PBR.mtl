@@ -10,8 +10,9 @@
   "_techIdx": "0",
   "_defines": [
     {
-      "USE_ALPHA_TEST": true,
-      "ALPHA_TEST_CHANNEL": "a"
+      "USE_OPACITY_MAP": true,
+      "ALPHA_SOURCE_CHANNEL": "a",
+      "USE_ALPHA_TEST": true
     },
     {},
     {}
@@ -47,12 +48,12 @@
   ],
   "_props": [
     {
-      "alphaSource": 0.736,
+      "alphaSource": 1,
       "alphaSourceMap": {
         "__uuid__": "d94ae8f7-28bc-4ee9-825b-ee6da1fb1a9a@6c48a",
         "__expectedType__": "cc.Texture2D"
       },
-      "alphaThreshold": 0.769
+      "alphaThreshold": 0.561
     },
     {},
     {}

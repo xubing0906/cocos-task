@@ -252,11 +252,8 @@ CCProgram standard-fs %{
   #endif
 
   #if USE_OPACITY_MAP
+    #pragma define-meta ALPHA_SOURCE_CHANNEL options([r, g, b, a])
     uniform sampler2D alphaSourceMap;
-  #endif
-
-  #if USE_ALPHA_TEST
-    #pragma define-meta ALPHA_TEST_CHANNEL options([r, g, b, a])
   #endif
 
   float discolor(vec3 srcColor) {
@@ -320,13 +317,13 @@ CCProgram standard-fs %{
 
     #if ALPHA_SOURCE_IS_OPACITY
       #if USE_OPACITY_MAP
-        baseColor.a = 1.0 - texture(alphaSourceMap, TEXTURE_UV).a;
+        baseColor.a = 1.0 - texture(alphaSourceMap, TEXTURE_UV).ALPHA_SOURCE_CHANNEL;
       #else
         baseColor.a = 1.0 - alphaSource;
       #endif
     #else
       #if USE_OPACITY_MAP
-        baseColor.a = texture(alphaSourceMap, TEXTURE_UV).ALPHA_TEST_CHANNEL;
+        baseColor.a = texture(alphaSourceMap, TEXTURE_UV).ALPHA_SOURCE_CHANNEL;
       #else
         baseColor.a = alphaSource;
       #endif
