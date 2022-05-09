@@ -18,7 +18,7 @@ CCEffect %{
         metallicMap:          { value: grey }
         occlusion:            { value: 1.0 }
         occlusionMap:         { value: white }
-        emissiveScale:        { value: [1.0, 1.0, 1.0, 1.0], editor: { displayName: Emissive } }
+        emissiveScale:        { value: 1.0, editor: { displayName: Emissive } }
         emissiveScaleMap:     { value: grey, editor: { displayName: EmissiveMap } }
         emissive:             { value: [0.0, 0.0, 0.0, 1.0], linear: true, editor: { displayName: EmissiveColor, type: color} }
         emissiveMap:          { value: grey, editor: { displayName: EmissiveColorMap } }
@@ -82,7 +82,7 @@ CCProgram shared-ubos %{
     vec4 albedo;
     vec4 albedoScaleAndCutoff;
     vec4 emissive;
-    vec4 emissiveScale;
+    float emissiveScale;
     float occlusion;
     float roughness;
     float metallic;
@@ -368,7 +368,7 @@ CCProgram standard-fs %{
         emissiveScaleColor.rgb = SRGBToLinear(emissiveScaleColor.rgb);
         emissiveColor.rgb *= emissiveScaleColor.rgb;
     #else
-        emissiveColor.rgb *= emissiveScale.rgb;
+        emissiveColor.rgb *= emissiveScale;
     #endif
     
     s.emissive = emissiveColor.rgb;
