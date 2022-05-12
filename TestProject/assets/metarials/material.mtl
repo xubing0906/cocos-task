@@ -7,7 +7,7 @@
     "__uuid__": "15301821-b608-4fe5-9901-9570c119b1e9",
     "__expectedType__": "cc.EffectAsset"
   },
-  "_techIdx": 0,
+  "_techIdx": "1",
   "_defines": [
     {},
     {},
@@ -23,28 +23,34 @@
         ]
       }
     },
-    {},
-    {}
+    {
+      "rasterizerState": {},
+      "depthStencilState": {},
+      "blendState": {
+        "targets": [
+          {}
+        ]
+      }
+    },
+    {
+      "rasterizerState": {},
+      "depthStencilState": {},
+      "blendState": {
+        "targets": [
+          {}
+        ]
+      }
+    }
   ],
   "_props": [
     {
-      "diffuseColor": {
+      "mainColor": {
         "__type__": "cc.Color",
-        "r": 85,
-        "g": 85,
-        "b": 85,
-        "a": 255
-      },
-      "diffuseFactor": 1,
-      "shininessExponent": 50,
-      "specularColor": {
-        "__type__": "cc.Color",
-        "r": 129,
-        "g": 129,
-        "b": 129,
-        "a": 0
-      },
-      "specularFactor": 50
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 85
+      }
     },
     {},
     {}
