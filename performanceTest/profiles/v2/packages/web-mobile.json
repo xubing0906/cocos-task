@@ -3,5 +3,6 @@
     "web-mobile": {
       "orientation": "portrait"
     }
-  }
+  },
+  "__version__": "1.0.0"
 }

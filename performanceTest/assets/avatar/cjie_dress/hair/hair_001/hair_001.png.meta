@@ -1,5 +1,5 @@
 {
-  "ver": "1.0.22",
+  "ver": "1.0.23",
   "importer": "image",
   "imported": true,
   "uuid": "e9ba2d46-91d4-4561-9ea8-b9baf9b381e3",
@@ -35,6 +35,7 @@
   "userData": {
     "hasAlpha": true,
     "type": "texture",
-    "redirect": "e9ba2d46-91d4-4561-9ea8-b9baf9b381e3@6c48a"
+    "redirect": "e9ba2d46-91d4-4561-9ea8-b9baf9b381e3@6c48a",
+    "fixAlphaTransparencyArtifacts": false
   }
 }

@@ -194,6 +194,7 @@ CCProgram standard-vs %{
   precision highp float;
   #include <input-standard>
   #include <cc-global>
+  #include <decode-base>
   #include <cc-local-batch>
   #include <shared-ubos>
   #include <cc-fog-vs>
@@ -320,7 +321,7 @@ CCProgram standard-fs %{
     return vec4(baseD / 5.0, 0.0);
   }
 
-  #define M_PI 3.1415926535897932384626433832795
+  #pragma define M_PI 3.1415926535897932384626433832795
   vec3 Profile( float sca ){  
     return  vec3(0.233, 0.455, 0.649) * 1.0 / (abs(sqrt(0.0064)) * abs(sqrt(2.0 * M_PI))) * exp( -sca * sca / (2.0 * 0.0064)) +
             vec3(0.1, 0.366, 0.344) * 1.0 / (abs(sqrt(0.0484)) * abs(sqrt(2.0 * M_PI))) * exp( -sca * sca / (2.0 * 0.0484)) +
@@ -359,17 +360,17 @@ CCProgram standard-fs %{
 
   #if USE_ALBEDO_MAP
     uniform sampler2D albedoMap;
-    #pragma define ALBEDO_UV options([v_uv, v_uv1])
+    #pragma define-meta ALBEDO_UV options([v_uv, v_uv1])
   #endif
 
   #if USE_NORMAL_MAP
     in vec3 v_tangent;
     in vec3 v_bitangent;
     uniform sampler2D normalMap;
-    #pragma define NORMAL_UV options([v_uv, v_uv1])
+    #pragma define-meta NORMAL_UV options([v_uv, v_uv1])
   #endif
 
-  #pragma define PBR_UV options([v_uv, v_uv1])
+  #pragma define-meta PBR_UV options([v_uv, v_uv1])
   #if USE_PBR_MAP
     uniform sampler2D pbrMap;
   #endif
@@ -384,17 +385,17 @@ CCProgram standard-fs %{
 
   #if USE_EMISSIVE_MAP
     uniform sampler2D emissiveMap;
-    #pragma define EMISSIVE_UV options([v_uv, v_uv1])
+    #pragma define-meta EMISSIVE_UV options([v_uv, v_uv1])
   #endif
 
-  #define OCCLUSION_CHANNEL r
-  #define ROUGHNESS_CHANNEL g
-  #define METALLIC_CHANNEL  b
-  #define SPECULARINTENSITY_CHANNEL w
+  #pragma define OCCLUSION_CHANNEL r
+  #pragma define ROUGHNESS_CHANNEL g
+  #pragma define METALLIC_CHANNEL  b
+  #pragma define SPECULARINTENSITY_CHANNEL w
 
 
   #if USE_ALPHA_TEST
-    #pragma define ALPHA_TEST_CHANNEL options([a, r])
+    #pragma define-meta ALPHA_TEST_CHANNEL options([a, r])
   #endif
 
   #if USE_SSS
@@ -535,6 +536,7 @@ CCProgram standard-fs %{
 
     pbr.y += roughnessGain * rimIndex;
     s.roughness = clamp(pbr.y, 0.04, 1.0);
+    s.specularIntensity = 0.5;
     s.metallic = pbr.z;
 
     s.emissive = emissive.rgb * emissiveScaleParam.xyz;
@@ -574,6 +576,7 @@ CCProgram standard-fs %{
 CCProgram shadow-caster-vs %{
   precision highp float;
   #include <input-standard>
+  #include <decode-base>
   #include <cc-local-batch>
   #include <shared-ubos>
   #include <cc-shadow>
@@ -622,11 +625,11 @@ CCProgram shadow-caster-fs %{
 
   #if USE_ALBEDO_MAP
     uniform sampler2D albedoMap;
-    #pragma define ALBEDO_UV options([v_uv, v_uv1])
+    #pragma define-meta ALBEDO_UV options([v_uv, v_uv1])
   #endif
 
   #if USE_ALPHA_TEST
-    #pragma define ALPHA_TEST_CHANNEL options([a, r])
+    #pragma define-meta ALPHA_TEST_CHANNEL options([a, r])
   #endif
 
   vec4 frag () {

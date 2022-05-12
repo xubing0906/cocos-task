@@ -12,5 +12,6 @@
   "builder-options": {
     "configID": "c6430f",
     "services": []
-  }
+  },
+  "__version__": "3.0.3"
 }

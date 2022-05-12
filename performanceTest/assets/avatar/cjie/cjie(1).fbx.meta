@@ -1,11 +1,9 @@
 {
-  "ver": "2.1.10",
+  "ver": "2.1.13",
   "importer": "fbx",
   "imported": true,
   "uuid": "3e4bec32-3bc0-4cb4-b5d2-8a380402eea1",
-  "files": [
-    "__original-animation-0.cconb"
-  ],
+  "files": [],
   "subMetas": {
     "30732": {
       "importer": "gltf-skeleton",
@@ -140,29 +138,6 @@
       "files": [
         ".bin",
         ".json"
-      ],
-      "subMetas": {}
-    },
-    "73b7f": {
-      "importer": "gltf-animation",
-      "uuid": "3e4bec32-3bc0-4cb4-b5d2-8a380402eea1@73b7f",
-      "displayName": "",
-      "id": "73b7f",
-      "name": "Take 001.animation",
-      "userData": {
-        "gltfIndex": 0,
-        "wrapMode": 2,
-        "sample": 30,
-        "span": {
-          "from": 0,
-          "to": 5
-        },
-        "events": []
-      },
-      "ver": "1.0.16",
-      "imported": true,
-      "files": [
-        ".cconb"
       ],
       "subMetas": {}
     },
@@ -343,21 +318,6 @@
       }
     ],
     "legacyFbxImporter": false,
-    "animationImportSettings": [
-      {
-        "name": "Take 001",
-        "duration": 5,
-        "fps": 30,
-        "splits": [
-          {
-            "name": "Take 001",
-            "from": 0,
-            "to": 5,
-            "wrapMode": 2
-          }
-        ]
-      }
-    ],
     "redirect": "3e4bec32-3bc0-4cb4-b5d2-8a380402eea1@5d756",
     "assetFinder": {
       "meshes": [

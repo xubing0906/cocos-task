@@ -36,7 +36,8 @@
       "mainTexture": {
         "__uuid__": "3159fbdc-d8bf-49e5-b3ef-3a97c769e907@6c48a",
         "__expectedType__": "cc.Texture2D"
-      }
+      },
+      "normalStrength": 0.836
     },
     {},
     {}
