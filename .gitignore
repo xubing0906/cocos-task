@@ -1,4 +1,4 @@
-# Prerequisites
+ # Prerequisites
 *.d
 
 # Compiled Object files
@@ -423,3 +423,5 @@ TestProject/temp/programming/packer-driver/targets/preview/chunks/d0/d0b282b9748
 TestProject/temp/programming/packer-driver/targets/preview/chunks/d0/d0b282b9748ef7fc7d2e7bd647d71b0f7e84da53.js.map
 TestProject/temp/programming/packer-driver/targets/preview/chunks/d0/d0b5187750a9b5b49aadedeaf74328dc3edecc1c.js
 TestProject/temp/programming/packer-driver/targets/preview/chunks/d0/d0b5187750a9b5b49aadedeaf74328dc3edecc1c.js.map
+/TestProject/temp
+/TestProject/build
