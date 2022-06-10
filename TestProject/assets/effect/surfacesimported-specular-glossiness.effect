@@ -44,8 +44,8 @@ CCEffect %{
           blendSrcAlpha: zero
           blendDstAlpha: one
     - &shadow-caster
-      vert: shadow-caster-vs:vert
-      frag: shadow-caster-fs:frag
+      vert: shadow-caster-vs
+      frag: shadow-caster-fs
       phase: shadow-caster
       propertyIndex: 0
       rasterizerState:
@@ -95,98 +95,47 @@ CCProgram shared-ubos %{
   };
 }%
 
-CCProgram standard-vs %{
-  precision highp float;
-  #include <input-standard>
-  #include <cc-global>
-  #include <cc-local-batch>
-  #include <shared-ubos>
-  #include <cc-fog-vs>
-  #include <cc-shadow-map-vs>
+CCProgram macro-remapping %{
+  // ui displayed macros
+  #pragma define-meta HAS_SECOND_UV
+  #pragma define-meta USE_TWOSIDE
+  #pragma define-meta USE_REFLECTION_DENOISE
+  #pragma define-meta IS_ANISOTROPY
+  #pragma define-meta USE_VERTEX_COLOR
 
-  #if USE_VERTEX_COLOR
-    in vec4 a_color;
-    out vec4 v_color;
+  #define CC_SURFACES_USE_SECOND_UV HAS_SECOND_UV
+  #define CC_SURFACES_USE_TWO_SIDED USE_TWOSIDE
+  #define CC_SURFACES_USE_REFLECTION_DENOISE USE_REFLECTION_DENOISE
+  #define CC_SURFACES_LIGHTING_ANISOTROPIC IS_ANISOTROPY
+  #define CC_SURFACES_USE_VERTEX_COLOR USE_VERTEX_COLOR
+
+  // if disabled, simulate convoluted IBL without convolution
+  #pragma define-meta USE_COMPATIBLE_LIGHTING
+  #define CC_SURFACES_USE_LEGACY_COMPATIBLE_LIGHTING USE_COMPATIBLE_LIGHTING
+
+  // depend on UI macros
+#if IS_ANISOTROPY || USE_NORMAL_MAP
+  #define CC_SURFACES_USE_TANGENT_SPACE 1
+#endif
+
+  // functionality for each effect
+  #define CC_SURFACES_LIGHTING_ANISOTROPIC_ENVCONVOLUTION_COUNT 31
+}%
+
+CCProgram surface-vertex %{
+  #define CC_SURFACES_VERTEX_MODIFY_UV
+  void SurfacesVertexModifyUV(inout SurfacesStandardVertexIntermediate In)
+  {
+    In.texCoord = In.texCoord * tilingOffset.xy + tilingOffset.zw;
+  #if USE_SECOND_UV && !CC_USE_LIGHTMAP
+    In.texCoord1 = In.texCoord1 * tilingOffset.xy + tilingOffset.zw;
   #endif
-
-  out vec3 v_position;
-  out vec3 v_normal;
-  out vec2 v_uv;
-  out vec2 v_uv1;
-
-  #if USE_NORMAL_MAP
-    out vec3 v_tangent;
-    out vec3 v_bitangent;
-  #endif
-
-  #if HAS_SECOND_UV || CC_USE_LIGHTMAP
-    in vec2 a_texCoord1;
-  #endif
-
-  #if CC_USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
-    #include <lightingmap-vs>
-  #endif
-
-  void main () {
-    StandardVertInput In;
-    CCVertInput(In);
-
-    mat4 matWorld, matWorldIT;
-    CCGetWorldMatrixFull(matWorld, matWorldIT);
-
-    vec4 pos = matWorld * In.position;
-
-    v_position = pos.xyz;
-    v_normal = normalize((matWorldIT * vec4(In.normal, 0.0)).xyz);
-
-    #if USE_TWOSIDE
-      vec3 viewDirect = normalize(cc_cameraPos.xyz - v_position);
-      v_normal *= dot(v_normal, viewDirect) < 0.0 ? -1.0 : 1.0;
-    #endif
-
-    #if USE_NORMAL_MAP
-      v_tangent = normalize((matWorld * vec4(In.tangent.xyz, 0.0)).xyz);
-      v_bitangent = cross(v_normal, v_tangent) * In.tangent.w; // note the cross order
-    #endif
-
-    v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
-
-    #if HAS_SECOND_UV
-      v_uv1 = a_texCoord1 * tilingOffset.xy + tilingOffset.zw;
-    #endif
-
-    #if USE_VERTEX_COLOR
-      v_color = a_color;
-    #endif
-
-    CC_TRANSFER_FOG(pos);
-    CC_TRANSFER_SHADOW(pos);
-
-    #if CC_USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
-      CCLightingMapCaclUV();
-    #endif
-
-    gl_Position = cc_matProj * (cc_matView * matWorld) * In.position;
   }
 }%
 
-CCProgram standard-fs %{
-  precision highp float;
-  #include <cc-global>
-  #include <shared-ubos>
-  #include <cc-fog-fs>
-  #include <standard-surface-entry>
-  #if CC_USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
-    #include <lightingmap-fs>
-  #endif
 
-  in vec3 v_position;
-  in vec2 v_uv;
-  in vec2 v_uv1;
-  in vec3 v_normal;
-  
-
-  #pragma define-meta  TEXTURE_UV options([v_uv, v_uv1])
+CCProgram surface-fragment %{
+  #pragma define-meta TEXTURE_UV options([v_uv, v_uv1])
   #pragma define-meta DCC_APP_NAME range([0, 2])
   #define DCC_APP_AUTODESK 0
   #define DCC_APP_BLENDER 1
@@ -203,48 +152,24 @@ CCProgram standard-fs %{
     uniform sampler2D metallicMap;
   #endif
 
-  #if USE_VERTEX_COLOR
-    in vec4 v_color;
-  #endif
- 
   #if USE_ALBEDO_MAP
     uniform sampler2D albedoMap;
   #endif
   #if USE_TRANSPARENCY_MAP
     uniform sampler2D transparencyMap;
   #endif
-
-  #if USE_NORMAL_MAP
-    in vec3 v_tangent;
-    in vec3 v_bitangent;
-    uniform sampler2D normalMap;
-  #endif
  
   #if USE_EMISSIVE_MAP
     uniform sampler2D emissiveMap;
   #endif
 
-bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out vec3 albedo, vec3 diffuse, vec3 specular, float f0 /*= 0.04*/)
-{
-	float d = max(max(diffuse.x, diffuse.y), diffuse.z);
-	vec3 normalizedColor = diffuse / (d + (d < EPSILON_LOWP ? EPSILON_LOWP : 0.0));
-	normalizedColor = d < EPSILON_LOWP ? specular : normalizedColor;
+  #if USE_NORMAL_MAP
+    uniform sampler2D normalMap;
+    #pragma define-meta NORMAL_UV options([v_uv, v_uv1])
+  #endif
 
-	float s = max(max(specular.x, specular.y), specular.z);
-
-	float delta = (d + s) * (d + s)  - 4.0 * f0 * d;
-	float deltaSqrt = sqrt(max(0.0, delta));
-	// solver
-	float solverMetallic = (-d - s + 2.0 * f0 + deltaSqrt) / (2.0 * f0);
-	vec3 solverAlbedo = (d + s) * normalizedColor - vec3(f0 * (1.0 - solverMetallic));
-
-	bool isValidSolver = delta >= 0.0;
-	metallic = isValidSolver ? clamp(solverMetallic, 0.0, 1.0) : 0.0;
-	albedo = isValidSolver ? vec3(max(0.0, solverAlbedo.x), max(0.0, solverAlbedo.y), max(0.0, solverAlbedo.z)) : diffuse;
-	return isValidSolver;
-}
-
-  float discolor(vec3 srcColor) {
+  float discolor(vec3 srcColor)
+  {
     return dot(GRAY_VECTOR, srcColor);
   }
   float convertShininessExponent(float shininessExp)
@@ -284,32 +209,22 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
     #endif
     return vec4(inSpecular, specularFactor);
   }
-  void surf (out StandardSurface s) {
-    //diffuse
+
+  vec4 calculateBaseColorAndPBRParams(out vec3 pbrParams)
+  {
     vec4 baseColor = diffuseColor;
     #if USE_VERTEX_COLOR
-      baseColor.rgb *= SRGBToLinear(v_color.rgb);
-      baseColor.a *= v_color.a;
+      baseColor.rgb *= SRGBToLinear(FSInput_vertexColor.rgb); // use linear
+      baseColor.a *= FSInput_vertexColor.a;
     #endif
-    float diffuseScale = diffuseFactor;
     #if USE_ALBEDO_MAP
       vec4 texColor = texture(albedoMap, TEXTURE_UV);
-      texColor.rgb = SRGBToLinear(texColor.rgb);
-      baseColor = texColor;
-      diffuseScale = 1.0;
-    #endif
-    baseColor.rgb *= diffuseScale;
-    
-    #if USE_TRANSPARENCY_MAP
-      baseColor.a = texture(transparencyMap, TEXTURE_UV).a * transparencyFactor;
-    #endif
-
-    #if USE_ALPHA_TEST
-      if (baseColor.a < albedoScaleAndCutoff.w) discard;
+      baseColor.rgb = SRGBToLinear(texColor.rgb);
+    #else
+      baseColor.rgb *= diffuseFactor;
     #endif
 
     vec4 specularColorAndFactor = getSpecularColorAndFactor();
-
     //glossiness
     float inGlossiness = 0.0, inSpecularIntensity = specularColorAndFactor.w;
     #if HAS_EXPORTED_GLOSSINESS
@@ -329,111 +244,29 @@ bool GetMetallicAlbedoFromDiffuseSpecularWithoutColor(out float metallic, out ve
 
     //metallic
     float inMetallic = 0.0;
-    vec4 albedo = baseColor;
+    vec3 albedo = baseColor.rgb;
     #if HAS_EXPORTED_METALLIC
       inMetallic = metallic;
     #else
       GetMetallicAlbedoFromDiffuseSpecularWithoutColor(inMetallic, albedo.rgb, baseColor.rgb, specularColorAndFactor.rgb, 0.04);
       inSpecularIntensity *= inMetallic; //simulate specular color is black
     #endif
+    baseColor.rgb = albedo;
 
-    s.normal = v_normal;
-    #if USE_NORMAL_MAP
-      vec3 nmmp = texture(normalMap, TEXTURE_UV).xyz - vec3(0.5);
-      s.normal =
-        (nmmp.x * normalScale) * normalize(v_tangent) +
-        (nmmp.y * normalScale) * normalize(v_bitangent) +
-        nmmp.z * normalize(s.normal);
-    #endif
-
-    HIGHP_VALUE_TO_STRUCT_DEFINED(v_position, s.position);
-
-    s.albedo = albedo;
-    s.occlusion = 1.0;
-    s.roughness = 1.0 - inGlossiness;
-    s.metallic = inMetallic;
-    s.specularIntensity = inSpecularIntensity * 0.5;
-    s.emissive = vec3(0.0);
-  #if USE_EMISSIVE_MAP
-    s.emissive = texture(emissiveMap, TEXTURE_UV).xyz;
-  #endif
-
-    #if CC_USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
-      vec4 lightColor = texture(cc_lightingMap, v_luv.xy);
-      s.lightmap = lightColor.xyz * v_luv.z;
-      s.lightmap_test = v_luv.z; /*lum*/
-    #endif
+    pbrParams.x = 1.0 - inGlossiness;
+    pbrParams.y = inMetallic;
+    pbrParams.z = inSpecularIntensity * 0.5;
+    return baseColor;
   }
 
-  CC_STANDARD_SURFACE_ENTRY()  
-}%
+  #define CC_SURFACES_FRAGMENT_MODIFY_BASECOLOR_AND_TRANSPARENCY
+  vec4 SurfacesFragmentModifyBaseColorAndTransparency()
+  {
+    //diffuse
+    vec3 pbrParams = vec3(1.0);
 
-CCProgram shadow-caster-vs %{
-  precision highp float;
-  #include <input-standard>
-  #include <cc-local-batch>
-  #include <shared-ubos>
-  #include <cc-shadow>
+    vec4 baseColor = calculateBaseColorAndPBRParams(pbrParams);
 
-  #if HAS_SECOND_UV || CC_USE_LIGHTMAP
-    in vec2 a_texCoord1;
-  #endif
-
-  out vec2 v_uv;
-  out vec2 v_uv1;
-  out vec4 v_worldPos;
-
-  out float v_clip_depth;
-
-  vec4 vert () {
-    StandardVertInput In;
-    CCVertInput(In);
-
-    mat4 matWorld, matWorldIT;
-    CCGetWorldMatrixFull(matWorld, matWorldIT);
-
-    v_worldPos = matWorld * In.position;
-    vec4 clipPos = cc_matLightViewProj * v_worldPos;
-
-    v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
-    #if HAS_SECOND_UV
-      v_uv1 = a_texCoord1 * tilingOffset.xy + tilingOffset.zw;
-    #endif
-
-    v_clip_depth = clipPos.z / clipPos.w * 0.5 + 0.5;
-
-    return clipPos;
-  }
-}%
-
-CCProgram shadow-caster-fs %{
-  precision highp float;
-  #include <shared-ubos>
-  #include <packing>
-  #include <cc-shadow-map-base>
-
-  in vec2 v_uv;
-  in vec2 v_uv1;
-  in vec4 v_worldPos;
-  in float v_clip_depth;
-
-  #pragma define-meta  TEXTURE_UV options([v_uv, v_uv1])
-
-  #if USE_ALBEDO_MAP
-    uniform sampler2D albedoMap;
-  #endif
-
-  #if USE_TRANSPARENCY_MAP
-    uniform sampler2D transparencyMap;
-  #endif
-
-  vec4 frag () {
-    vec4 baseColor = diffuseColor;
-    #if USE_ALBEDO_MAP
-      vec4 texColor = texture(albedoMap, TEXTURE_UV);
-      baseColor *= texColor;
-    #endif
-    
     #if USE_TRANSPARENCY_MAP
       baseColor.a = texture(transparencyMap, TEXTURE_UV).a * transparencyFactor;
     #endif
@@ -441,19 +274,114 @@ CCProgram shadow-caster-fs %{
     #if USE_ALPHA_TEST
       if (baseColor.a < albedoScaleAndCutoff.w) discard;
     #endif
-
-    // spot use linear
-    if(cc_shadowLPNNInfo.x > 0.000001 && cc_shadowLPNNInfo.x < 1.999999) {
-      // enabled linear depth
-      if (cc_shadowNFLSInfo.z > 0.000001) {
-        return vec4(CCGetLinearDepth(v_worldPos.xyz), 1.0, 1.0, 1.0);
-      }
-    }
-
-    if (cc_shadowLPNNInfo.y > 0.000001) {
-      return packDepthToRGBA(v_clip_depth);
-    }
-
-    return vec4(v_clip_depth, 1.0, 1.0, 1.0);
+    
+    return baseColor;
   }
+
+  #define CC_SURFACES_FRAGMENT_MODIFY_WORLD_NORMAL
+  vec3 SurfacesFragmentModifyWorldNormal()
+  {
+    vec3 normal = FSInput_worldNormal;
+    #if USE_NORMAL_MAP
+      vec3 nmmp = texture(normalMap, NORMAL_UV).xyz - vec3(0.5);
+      normal = CalculateNormalFromTangentSpace(nmmp, normalScale, normal.xyz, FSInput_worldTangent, FSInput_mirrorNormal);
+    #endif
+
+    return normalize(normal);
+  }
+
+  #define CC_SURFACES_FRAGMENT_MODIFY_EMISSIVE
+  vec3 SurfacesFragmentModifyEmissive()
+  { 
+    vec3 emissiveColor = emissive.rgb;
+    #if USE_EMISSIVE_MAP
+      emissiveColor = texture(emissiveMap, TEXTURE_UV).xyz;
+    #endif
+    return emissiveColor;
+  }
+
+  #define CC_SURFACES_FRAGMENT_MODIFY_PBRPARAMS
+  vec4 SurfacesFragmentModifyPBRParams()
+  {
+    vec4 pbr = vec4(1.0);
+    vec3 outParams = vec3(1.0);
+    calculateBaseColorAndPBRParams(outParams);
+    pbr.x = 1.0;
+    pbr.y = outParams.x;
+    pbr.z = outParams.y;
+    pbr.w = outParams.z;
+    return pbr;
+  }
+}%
+
+CCProgram standard-vs %{
+  precision highp float;
+
+  // 1. surface internal macros, for technique usage or remapping some user (material) macros to surface internal macros
+  #include <macro-remapping>
+  #include <surfaces/effect-macros/common-macros>
+
+  // 2. common include with corresponding shader stage, include before surface functions
+  #include <surfaces/includes/common-vs>
+
+  // 3. user surface functions that can use user (effect) parameters (ubo Constants)
+  //    see surfaces/default-functions/xxx.chunk
+  #include <shared-ubos>
+  #include <surface-vertex>
+
+  // 4. surface include with corresponding shader stage and shading-model (optional)
+  #include <surfaces/includes/standard-vs>
+
+  // 5. shader entry with corresponding shader stage and technique usage/type
+  #include <shading-entries/main-functions/render-to-scene/vs>
+}%
+
+
+CCProgram shadow-caster-vs %{
+  precision highp float;
+  #include <surfaces/effect-macros/render-to-shadowmap>
+  #include <surfaces/includes/common-vs>
+  #include <shared-ubos>
+  #include <surface-vertex>
+  #include <shading-entries/main-functions/render-to-shadowmap/vs>
+}%
+
+
+
+CCProgram standard-fs %{
+  // shading-model : standard
+  // lighting-model : standard (isotropy / anisotropy pbr)
+  // shader stage : fs
+  // technique usage/type : render-to-scene
+
+  precision highp float;
+  // 1. surface internal macros, for technique usage or remapping some user (material) macros to surface internal macros
+  #include <macro-remapping>
+  #include <surfaces/effect-macros/common-macros>
+
+  // 2. common include with corresponding shader stage, include before surface functions
+  #include <surfaces/includes/common-fs>
+
+  // 3. user surface functions that can use user (effect) parameters (ubo Constants)
+  //    see surfaces/default-functions/xxx.chunk
+  #include <shared-ubos>
+  #include <surface-fragment>
+
+  // 4. lighting-model (optional)
+  #include <lighting-models/includes/standard>
+
+  // 5. surface include with corresponding shader stage and shading-model (optional)
+  #include <surfaces/includes/standard-fs>
+
+  // 6. shader entry with corresponding shader stage and technique usage/type
+  #include <shading-entries/main-functions/render-to-scene/fs>
+}%
+
+CCProgram shadow-caster-fs %{
+  precision highp float;
+  #include <surfaces/effect-macros/render-to-shadowmap>
+  #include <surfaces/includes/common-fs>
+  #include <shared-ubos>
+  #include <surface-fragment>
+  #include <shading-entries/main-functions/render-to-shadowmap/fs>
 }%
