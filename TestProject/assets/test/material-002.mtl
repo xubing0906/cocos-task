@@ -4,7 +4,7 @@
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
-    "__uuid__": "1baf0fc9-befa-459c-8bdd-af1a450a0319",
+    "__uuid__": "cf191b12-c268-4597-a857-443f74646f31",
     "__expectedType__": "cc.EffectAsset"
   },
   "_techIdx": 0,
@@ -44,7 +44,6 @@
   ],
   "_props": [
     {
-      "roughness": 0.2,
       "metallic": 1
     },
     {},
