@@ -1,0 +1,144 @@
+{
+  "ver": "2.3.1",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "76f64e9a-99b9-4ae1-b797-13ad820bf1e4",
+  "files": [],
+  "subMetas": {
+    "20605": {
+      "importer": "gltf-scene",
+      "uuid": "76f64e9a-99b9-4ae1-b797-13ad820bf1e4@20605",
+      "displayName": "",
+      "id": "20605",
+      "name": "clothes01 1.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "72525": {
+      "importer": "gltf-mesh",
+      "uuid": "76f64e9a-99b9-4ae1-b797-13ad820bf1e4@72525",
+      "displayName": "",
+      "id": "72525",
+      "name": "clothes01.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "32dbe": {
+      "importer": "gltf-material",
+      "uuid": "76f64e9a-99b9-4ae1-b797-13ad820bf1e4@32dbe",
+      "displayName": "",
+      "id": "32dbe",
+      "name": "clothes01.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "legacyFbxImporter": false,
+    "allowMeshDataAccess": true,
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "redirect": "76f64e9a-99b9-4ae1-b797-13ad820bf1e4@20605",
+    "assetFinder": {
+      "meshes": [
+        "76f64e9a-99b9-4ae1-b797-13ad820bf1e4@72525"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [
+        "76f64e9a-99b9-4ae1-b797-13ad820bf1e4@32dbe"
+      ],
+      "scenes": [
+        "76f64e9a-99b9-4ae1-b797-13ad820bf1e4@20605"
+      ]
+    },
+    "normals": 2,
+    "tangents": 2,
+    "disableMeshSplit": false,
+    "meshOptimizer": false,
+    "materials": {
+      "76f64e9a-99b9-4ae1-b797-13ad820bf1e4@32dbe": {
+        "__type__": "cc.Material",
+        "_name": "",
+        "_objFlags": 0,
+        "_native": "",
+        "_effectAsset": {
+          "__uuid__": "1baf0fc9-befa-459c-8bdd-af1a450a0319",
+          "__expectedType__": "cc.EffectAsset"
+        },
+        "_techIdx": 0,
+        "_defines": [
+          {
+            "USE_NORMAL_MAP": true
+          },
+          {},
+          {}
+        ],
+        "_states": [
+          {
+            "rasterizerState": {},
+            "depthStencilState": {},
+            "blendState": {
+              "targets": [
+                {}
+              ]
+            }
+          },
+          {
+            "rasterizerState": {},
+            "depthStencilState": {},
+            "blendState": {
+              "targets": [
+                {}
+              ]
+            }
+          },
+          {
+            "rasterizerState": {},
+            "depthStencilState": {},
+            "blendState": {
+              "targets": [
+                {}
+              ]
+            }
+          }
+        ],
+        "_props": [
+          {
+            "normalMap": {
+              "__uuid__": "d5550771-d3e4-4d1e-9163-0796298e7d7f@3c318",
+              "__expectedType__": "cc.Texture2D"
+            }
+          },
+          {},
+          {}
+        ]
+      }
+    },
+    "morphNormals": 0
+  }
+}

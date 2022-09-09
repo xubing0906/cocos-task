@@ -1,5 +1,5 @@
 {
-  "ver": "1.0.23",
+  "ver": "1.0.25",
   "importer": "image",
   "imported": true,
   "uuid": "b71769c0-31e3-4fa8-985a-b6b2b30a949c",
@@ -22,8 +22,7 @@
         "mipfilter": "linear",
         "anisotropy": 0,
         "isRGBE": false,
-        "imageDatabaseUri": "db://assets/test/2048.tga",
-        "mipBakeMode": 2
+        "imageDatabaseUri": "db://assets/test/2048.tga"
       },
       "ver": "1.0.10",
       "imported": true,
