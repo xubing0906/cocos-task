@@ -4,12 +4,15 @@
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
-    "__uuid__": "c8f66d17-351a-48da-a12c-0212d28575c4",
+    "__uuid__": "f648964e-8d32-41fc-9ac9-7a1e714dd17b",
     "__expectedType__": "cc.EffectAsset"
   },
   "_techIdx": 0,
   "_defines": [
     {
+      "DCC_APP_NAME": 5,
+      "USE_SPECULAR_GLOSSINESS_MAP": true,
+      "USE_TRANSPARENCY_MAP": true,
       "USE_ALPHA_TEST": true
     },
     {},
@@ -46,6 +49,10 @@
   ],
   "_props": [
     {
+      "mainTexture": {
+        "__uuid__": "bb53b411-82f7-4aba-acc0-ef19988c18f4@6c48a",
+        "__expectedType__": "cc.Texture2D"
+      },
       "mainColor": {
         "__type__": "cc.Color",
         "r": 255,
@@ -54,8 +61,11 @@
         "a": 149
       },
       "alphaThreshold": 0.389,
-      "metallic": 0,
-      "mainTexture": {
+      "specularGlossinessMap": {
+        "__uuid__": "d5550771-d3e4-4d1e-9163-0796298e7d7f@3c318",
+        "__expectedType__": "cc.Texture2D"
+      },
+      "transparencyMap": {
         "__uuid__": "bb53b411-82f7-4aba-acc0-ef19988c18f4@6c48a",
         "__expectedType__": "cc.Texture2D"
       }

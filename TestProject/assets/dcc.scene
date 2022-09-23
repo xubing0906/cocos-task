@@ -213,6 +213,8 @@
     "_screenScale": 1,
     "_visibility": 1822425087,
     "_targetTexture": null,
+    "_cameraType": -1,
+    "_trackingType": 0,
     "_id": "7dWQTpwS5LrIHnc1zAPUtf"
   },
   {
@@ -508,32 +510,32 @@
     "__type__": "cc.AmbientInfo",
     "_skyColorHDR": {
       "__type__": "cc.Vec4",
-      "x": 0.380012,
-      "y": 0.481518,
-      "z": 0.719706,
+      "x": 0.238934,
+      "y": 0.238874,
+      "z": 0.268405,
       "w": 0.520833125
     },
     "_skyColor": {
       "__type__": "cc.Vec4",
-      "x": 0.380012,
-      "y": 0.481518,
-      "z": 0.719706,
+      "x": 0.238934,
+      "y": 0.238874,
+      "z": 0.268405,
       "w": 0.520833125
     },
     "_skyIllumHDR": 20000,
     "_skyIllum": 20000,
     "_groundAlbedoHDR": {
       "__type__": "cc.Vec4",
-      "x": 0.347447,
-      "y": 0.399825,
-      "z": 0.50082,
+      "x": 0.324099,
+      "y": 0.287085,
+      "z": 0.142447,
       "w": 0
     },
     "_groundAlbedo": {
       "__type__": "cc.Vec4",
-      "x": 0.347447,
-      "y": 0.399825,
-      "z": 0.50082,
+      "x": 0.324099,
+      "y": 0.287085,
+      "z": 0.142447,
       "w": 0
     },
     "_skyColorLDR": {
@@ -581,11 +583,11 @@
     "__type__": "cc.SkyboxInfo",
     "_envLightingType": 0,
     "_envmapHDR": {
-      "__uuid__": "d0d14003-807e-44d4-94f8-136ae0e859f2@b47c0",
+      "__uuid__": "772b9953-5734-4ac9-a856-2182ef5498df@b47c0",
       "__expectedType__": "cc.TextureCube"
     },
     "_envmap": {
-      "__uuid__": "d0d14003-807e-44d4-94f8-136ae0e859f2@b47c0",
+      "__uuid__": "772b9953-5734-4ac9-a856-2182ef5498df@b47c0",
       "__expectedType__": "cc.TextureCube"
     },
     "_envmapLDR": {
@@ -596,7 +598,10 @@
     "_diffuseMapLDR": null,
     "_enabled": true,
     "_useHDR": true,
-    "_editableMaterial": null
+    "_editableMaterial": null,
+    "_reflectionHDR": null,
+    "_reflectionLDR": null,
+    "_rotationAngle": 0
   },
   {
     "__type__": "cc.FogInfo",

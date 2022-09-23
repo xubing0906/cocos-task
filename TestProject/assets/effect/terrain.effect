@@ -103,6 +103,7 @@ CCProgram surface-fragment %{
     #if LAYERS > 1
       vec4 w = texture(weightMap, uvw);
     #endif
+    
     vec4 baseColor = vec4(0, 0, 0, 0);
     #if LAYERS == 1
       baseColor = texture(detailMap0, uv0);

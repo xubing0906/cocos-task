@@ -10,30 +10,11 @@
   "_techIdx": 0,
   "_defines": [
     {
-      "SAMPLE_FROM_RT": true
-    },
-    {},
-    {}
+      "SAMPLE_FROM_RT": true,
+      "USE_RGBE_CUBEMAP": true
+    }
   ],
   "_states": [
-    {
-      "rasterizerState": {},
-      "depthStencilState": {},
-      "blendState": {
-        "targets": [
-          {}
-        ]
-      }
-    },
-    {
-      "rasterizerState": {},
-      "depthStencilState": {},
-      "blendState": {
-        "targets": [
-          {}
-        ]
-      }
-    },
     {
       "rasterizerState": {},
       "depthStencilState": {},
@@ -45,8 +26,6 @@
     }
   ],
   "_props": [
-    {},
-    {},
     {}
   ]
 }
