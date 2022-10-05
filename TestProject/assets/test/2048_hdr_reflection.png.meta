@@ -22,7 +22,8 @@
         "mipfilter": "linear",
         "anisotropy": 0,
         "isRGBE": true,
-        "imageDatabaseUri": "db://assets/test/2048_hdr_reflection.png"
+        "imageDatabaseUri": "db://assets/test/2048_hdr_reflection.png",
+        "mipBakeMode": 2
       },
       "ver": "1.0.10",
       "imported": true,
