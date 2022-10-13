@@ -6,12 +6,12 @@ CCEffect %{
     - vert: unlit-vs:vert
       frag: unlit-fs:frag
       properties: &props
-        reflectionProbeMap:    { value: grey }
+        probePlanarMap:    { value: grey }
+        probeCubeMap:    { value: grey }
         tilingOffset:   { value: [1, 1, 0, 0] }
         mainColor:      { value: [1, 1, 1, 1], linear: true, editor: { type: color } }
         colorScale:     { value: [1, 1, 1], target: colorScaleAndCutoff.xyz }
         alphaThreshold: { value: 0.5, target: colorScaleAndCutoff.w, editor: { parent: USE_ALPHA_TEST } }
-        color:          { target: mainColor, linear: true, editor: { visible: false } } # backward compability
       migrations: &migs
         properties:
           mainColor:    { formerlySerializedAs: color }
@@ -76,14 +76,14 @@ CCProgram unlit-vs %{
     out lowp vec4 v_color;
   #endif
 
-  #if USE_TEXTURE
-    out vec2 v_uv;
-    uniform TexCoords {
-      vec4 tilingOffset;
-    };
-  #endif
+  out vec2 v_uv;
+  uniform TexCoords {
+    vec4 tilingOffset;
+  };
 
   out mediump vec4 viewDir;
+
+  out vec4 v_screenPos;
 
   vec4 vert () {
     CCDecode(viewDir);
@@ -93,19 +93,15 @@ CCProgram unlit-vs %{
     mat4 matWorld;
     CCGetWorldMatrix(matWorld);
 
-    #if USE_TEXTURE
-      v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
-      #if SAMPLE_FROM_RT
-        CC_HANDLE_RT_SAMPLE_FLIP(v_uv);
-      #endif
-    #endif
-
-    #if USE_VERTEX_COLOR
-      v_color = a_color;
+    v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
+    #if SAMPLE_FROM_RT
+      CC_HANDLE_RT_SAMPLE_FLIP(v_uv);
     #endif
 
     CC_TRANSFER_FOG(matWorld * position);
-    return cc_matProj * (cc_matView * matWorld) * position;
+
+    v_screenPos = cc_matProj * (cc_matView * matWorld) * position;
+    return v_screenPos;
   }
 }%
 
@@ -123,10 +119,15 @@ CCProgram unlit-fs %{
     #pragma define-meta ALPHA_TEST_CHANNEL options([a, r, g, b])
   #endif
 
-  #if USE_TEXTURE
-    in vec2 v_uv;
-    uniform sampler2D mainTexture;
+  #if USE_REFLECTION_PROBE
+    #pragma define-meta REFLECTION_PROBE_TYPE options([0, 1, 2])
   #endif
+
+
+  in vec2 v_uv;
+
+  in vec4 v_screenPos;
+
 
   uniform Constant {
     vec4 mainColor;
@@ -139,18 +140,32 @@ CCProgram unlit-fs %{
 
   in mediump vec4 viewDir;
 
-  uniform samplerCube reflectionProbeMap;
+  uniform samplerCube probeCubeMap;
+
+  uniform sampler2D probePlanarMap;
+
 
   vec4 frag () {
     vec4 o = mainColor;
     o.rgb *= colorScaleAndCutoff.xyz;
 
-    #if USE_RGBE_CUBEMAP
-      vec3 c = unpackRGBE(fragTextureLod(reflectionProbeMap, viewDir.xyz, 0.0));
-    #else
-      vec3 c = SRGBToLinear(fragTextureLod(reflectionProbeMap, viewDir.xyz, 0.0).rgb);
-    #endif
+   
 
-    return vec4(c, 1.0);
+    if(REFLECTION_PROBE_TYPE == 0) {
+      return o;
+    } else if(REFLECTION_PROBE_TYPE == 1) {
+       #if USE_RGBE_CUBEMAP
+        vec3 c = unpackRGBE(fragTextureLod(probeCubeMap, viewDir.xyz, 0.0));
+      #else
+        vec3 c = SRGBToLinear(fragTextureLod(probeCubeMap, viewDir.xyz, 0.0).rgb);
+      #endif
+      return vec4(c * mainColor.rgb, 1.0);
+    } else if(REFLECTION_PROBE_TYPE == 2) {
+      vec2 screenUV = v_screenPos.xy / v_screenPos.w * 0.5 + 0.5;
+      screenUV = vec2(1.0 - screenUV.x, 1.0 - screenUV.y);
+
+      vec3 c = texture(probePlanarMap, screenUV).rgb;
+      return vec4(c * mainColor.rgb, 1.0);
+    }
   }
 }%

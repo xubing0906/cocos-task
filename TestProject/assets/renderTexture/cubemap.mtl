@@ -9,7 +9,10 @@
   },
   "_techIdx": 0,
   "_defines": [
-    {}
+    {
+      "USE_REFLECTION_PROBE": true,
+      "REFLECTION_PROBE_TYPE": 1
+    }
   ],
   "_states": [
     {
@@ -23,6 +26,11 @@
     }
   ],
   "_props": [
-    {}
+    {
+      "probeCubeMap": {
+        "__uuid__": "8b9e93c0-5e43-4947-b347-a1613d148397@b47c0",
+        "__expectedType__": "cc.TextureCube"
+      }
+    }
   ]
 }

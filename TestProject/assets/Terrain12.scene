@@ -277,10 +277,7 @@
       "__uuid__": "511d7bdd-c72b-49f0-9355-7579a7881faa",
       "__expectedType__": "cc.TerrainAsset"
     },
-    "_effectAsset": {
-      "__uuid__": "a0fd9f76-74fe-423c-92d9-298906c189ba",
-      "__expectedType__": "cc.EffectAsset"
-    },
+    "_effectAsset": null,
     "_lightmapInfos": [],
     "_receiveShadow": false,
     "_useNormalmap": false,
@@ -359,6 +356,7 @@
     "_shadowReceivingMode": 1,
     "_shadowBias": 0,
     "_shadowNormalBias": 0,
+    "_bakeToProbe": true,
     "_enableMorph": true,
     "_id": "6eiJQtVRNGLKsHa5ko2YQZ"
   },
@@ -448,6 +446,7 @@
     "_shadowReceivingMode": 1,
     "_shadowBias": 0,
     "_shadowNormalBias": 0,
+    "_bakeToProbe": true,
     "_enableMorph": true,
     "_id": "2fAGkleyZLHYMkj8Y/cXLa"
   },
@@ -537,6 +536,7 @@
     "_shadowReceivingMode": 1,
     "_shadowBias": 0,
     "_shadowNormalBias": 0,
+    "_bakeToProbe": true,
     "_enableMorph": true,
     "_id": "88iopIvJdHUJH5wmANsP4h"
   },
@@ -626,6 +626,7 @@
     "_shadowReceivingMode": 1,
     "_shadowBias": 0,
     "_shadowNormalBias": 0,
+    "_bakeToProbe": true,
     "_enableMorph": true,
     "_id": "00g5u9H+dC1KotMOX29BSs"
   },
