@@ -9,8 +9,6 @@ export class cameraController extends Component {
     [x: string]: any;
     // @property(RenderTexture)
     // rt: RenderTexture | null;
-    @property(Material)
-    material: Material;
     @property(String)
     renderTexName = "renderTex1";
     
@@ -25,7 +23,6 @@ export class cameraController extends Component {
 
     private _quat: Quat = new Quat();//爱心旋转
     start() {
-        this.material.setProperty('probePlanarMap', this.textutre, 0);
         // this._camera = this.getComponent(Camera);
         // this._width = this._camera.camera.width;
         // this._height = this._camera.camera.height;
@@ -64,13 +61,11 @@ export class cameraController extends Component {
     update(deltaTime: number) {
         // Quat.fromEuler(this._quat, 0, 120 * deltaTime, 0);
         // this.node.rotate(this._quat);
-        this.material.setProperty('probePlanarMap', this.textutre, 0);
     }
 
     onFocusInEditor()
     {
         //this.capturePlanar();
-        this.material.setProperty('probePlanarMap', this.textutre, 0);
     } 
 
     public capturePlanar () {

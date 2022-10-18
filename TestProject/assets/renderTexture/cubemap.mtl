@@ -4,15 +4,12 @@
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
-    "__uuid__": "ee14e554-55ab-43e5-9e2d-5e1cbc239f3f",
+    "__uuid__": "48fab402-7e73-4be5-81b3-0631a60ccd99",
     "__expectedType__": "cc.EffectAsset"
   },
   "_techIdx": 0,
   "_defines": [
-    {
-      "USE_REFLECTION_PROBE": true,
-      "REFLECTION_PROBE_TYPE": 1
-    }
+    {}
   ],
   "_states": [
     {
@@ -26,11 +23,6 @@
     }
   ],
   "_props": [
-    {
-      "probeCubeMap": {
-        "__uuid__": "8b9e93c0-5e43-4947-b347-a1613d148397@b47c0",
-        "__expectedType__": "cc.TextureCube"
-      }
-    }
+    {}
   ]
 }
