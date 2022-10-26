@@ -36,31 +36,17 @@ export class cameraController extends Component {
         //     this._camera.targetTexture = this._renderTex;
         // }
 
-        // if (this.material) {
-        //     // let defines = this.material.passes[0].defines;
-        //     // defines["SAMPLE_FROM_RT"] = true;
-        //     //this.material.recompileShaders(defines);
-        //     this.material.setProperty(this.renderTexName, this._renderTex, 0);
-        // }
+       
         // this.scheduleOnce(function(){
-        //     const pixelData = this._renderTex.readPixels();
-        //     console.log(pixelData);
-        //     //let path = "D://cocosProject//cocos-task//TestProject//assets//renderTexture//testRT.png";
-        //     //native.saveImageData(pixelData, this._renderTex.width, this._renderTex.height, path);
-        //     // let url = CaptureUtils.toImgUrl(this._renderTex);
-        //     // assetManager.loadRemote<ImageAsset>(url, { ext: '.png' }, (err, img) => { 
-        //     //     let texture = new Texture2D;
-        //     //     texture.image = img;
-        //     //     this.material.setProperty("mainTexture", texture, 0);
-        //     // });   
+        //     if (this.material) {
+        //         this.material.setProperty(this.renderTexName, this._renderTex, 0);
+        //     }
         // });   
-        // let ccsharp = sharp("cccc");
-        // console.log(ccsharp.metadata);
     
     }
     update(deltaTime: number) {
-        // Quat.fromEuler(this._quat, 0, 120 * deltaTime, 0);
-        // this.node.rotate(this._quat);
+        Quat.fromEuler(this._quat, 0, 60 * deltaTime, 0);
+        this.node.rotate(this._quat);
     }
 
     onFocusInEditor()

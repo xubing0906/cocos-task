@@ -27,22 +27,28 @@
         "__id__": 10
       },
       {
-        "__id__": 65
+        "__id__": 66
       },
       {
-        "__id__": 84
+        "__id__": 70
       },
       {
-        "__id__": 87
+        "__id__": 89
       },
       {
-        "__id__": 90
+        "__id__": 92
       },
       {
-        "__id__": 93
+        "__id__": 95
       },
       {
-        "__id__": 96
+        "__id__": 98
+      },
+      {
+        "__id__": 101
+      },
+      {
+        "__id__": 104
       }
     ],
     "_active": true,
@@ -50,9 +56,9 @@
     "_prefab": null,
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 99
+      "__id__": 107
     },
-    "_reflectionProbeId": 36,
+    "_reflectionProbeId": 42,
     "_id": "db6075bc-c72b-407e-adf5-b3162b1577db"
   },
   {
@@ -162,16 +168,16 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 12.259,
-      "y": 154.771,
-      "z": 285.421
+      "x": -74.95844852980397,
+      "y": 161.84601211982948,
+      "z": 220.22082277531834
     },
     "_lrot": {
       "__type__": "cc.Quat",
-      "x": -0.2626767084980511,
-      "y": 0.04827360743479159,
-      "z": 0.13926167727557132,
-      "w": 0.9535600614960005
+      "x": -0.3413653954267751,
+      "y": -0.18174521709408645,
+      "z": -0.06745685263734318,
+      "w": 0.9197216513167495
     },
     "_lscale": {
       "__type__": "cc.Vec3",
@@ -182,9 +188,9 @@
     "_layer": 1073741824,
     "_euler": {
       "__type__": "cc.Vec3",
-      "x": -32,
-      "y": 9.8,
-      "z": 13.9
+      "x": -40.725988197866606,
+      "y": -22.356286780119003,
+      "z": 7.951386703658792e-16
     },
     "_id": "04MhCapv1NL5B1uOqEP3/Z"
   },
@@ -303,7 +309,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 1,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -391,7 +396,11 @@
       }
     ],
     "_active": true,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 65
+      }
+    ],
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -440,7 +449,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": -0.236,
-      "z": 0
+      "z": 0.113
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -493,7 +502,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -536,7 +544,7 @@
       "__type__": "cc.Vec3",
       "x": 10.026,
       "y": -0.236,
-      "z": 0
+      "z": 0.113
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -589,7 +597,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -632,7 +639,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": -0.236,
-      "z": 9.696
+      "z": 9.809
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -685,7 +692,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -728,7 +734,7 @@
       "__type__": "cc.Vec3",
       "x": 10.026,
       "y": -0.236,
-      "z": 9.696
+      "z": 9.809
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -781,7 +787,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -824,7 +829,7 @@
       "__type__": "cc.Vec3",
       "x": 10.026,
       "y": 2.743,
-      "z": 4.751
+      "z": 4.864
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -877,7 +882,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -920,7 +924,7 @@
       "__type__": "cc.Vec3",
       "x": 4.885,
       "y": 2.743,
-      "z": 4.751
+      "z": 4.864
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -973,7 +977,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1016,7 +1019,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 2.743,
-      "z": 4.751
+      "z": 4.864
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1069,7 +1072,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1112,7 +1114,7 @@
       "__type__": "cc.Vec3",
       "x": 5.01,
       "y": 2.79,
-      "z": 0
+      "z": 0.113
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1165,7 +1167,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1208,7 +1209,7 @@
       "__type__": "cc.Vec3",
       "x": 5.01,
       "y": 2.79,
-      "z": 4.981
+      "z": 5.094
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1261,7 +1262,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1304,7 +1304,7 @@
       "__type__": "cc.Vec3",
       "x": 5.01,
       "y": 2.79,
-      "z": 9.696
+      "z": 9.809
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1357,7 +1357,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1400,7 +1399,7 @@
       "__type__": "cc.Vec3",
       "x": 4.858,
       "y": -1.406,
-      "z": 14.896
+      "z": 15.009
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1453,7 +1452,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1494,9 +1492,9 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -5.073,
+      "x": -5.177,
       "y": 0.234,
-      "z": 5.168
+      "z": 5.281
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1549,7 +1547,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1592,7 +1589,7 @@
       "__type__": "cc.Vec3",
       "x": 4.746,
       "y": -1.186,
-      "z": -4.107
+      "z": -3.994
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1645,7 +1642,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1688,7 +1684,7 @@
       "__type__": "cc.Vec3",
       "x": 14.163,
       "y": -1.19,
-      "z": 4.558
+      "z": 4.671
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1741,7 +1737,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1784,7 +1779,7 @@
       "__type__": "cc.Vec3",
       "x": 4.975,
       "y": -0.236,
-      "z": 9.527
+      "z": 9.64
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1837,7 +1832,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1880,7 +1874,7 @@
       "__type__": "cc.Vec3",
       "x": 0.046,
       "y": -0.236,
-      "z": 4.415
+      "z": 4.528
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -1933,7 +1927,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -1976,7 +1969,7 @@
       "__type__": "cc.Vec3",
       "x": 9.967,
       "y": -0.236,
-      "z": 4.415
+      "z": 4.528
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -2029,7 +2022,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -2072,7 +2064,7 @@
       "__type__": "cc.Vec3",
       "x": 4.975,
       "y": -0.236,
-      "z": -0.234
+      "z": -0.121
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -2125,7 +2117,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -2150,6 +2141,132 @@
     "_lightmapSize": 64
   },
   {
+    "__type__": "611ad8iEoJFBLOvJx7+gI4F",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 10
+    },
+    "_enabled": false,
+    "__prefab": null,
+    "renderTexName": "renderTex1",
+    "testNode": null,
+    "textutre": null,
+    "_id": "f4qEEjDqJHv4CzGbpLCv09"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "Cube",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 67
+      },
+      {
+        "__id__": 69
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 132.913,
+      "y": 12.008,
+      "z": -95.208
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 30,
+      "y": 30,
+      "z": 30
+    },
+    "_layer": 1073741824,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "94hwK+DYNLYL8mrEYEarVa"
+  },
+  {
+    "__type__": "cc.MeshRenderer",
+    "_name": "Cube<ModelComponent>",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 66
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_materials": [
+      {
+        "__uuid__": "89257c6f-f106-4ab0-854c-6a022f7826eb",
+        "__expectedType__": "cc.Material"
+      }
+    ],
+    "_visFlags": 0,
+    "lightmapSettings": {
+      "__id__": 68
+    },
+    "_mesh": {
+      "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@a804a",
+      "__expectedType__": "cc.Mesh"
+    },
+    "_shadowCastingMode": 0,
+    "_shadowReceivingMode": 1,
+    "_shadowBias": 0,
+    "_shadowNormalBias": 0,
+    "_bakeToReflectionProbe": true,
+    "_reflectionProbeType": 1,
+    "_probeCubemap": {
+      "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
+      "__expectedType__": "cc.TextureCube"
+    },
+    "_enableMorph": true,
+    "_id": "104BdAxFdAu5imid0A7IwZ"
+  },
+  {
+    "__type__": "cc.ModelLightmapSettings",
+    "texture": null,
+    "uvParam": {
+      "__type__": "cc.Vec4",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 0
+    },
+    "_bakeable": false,
+    "_castShadow": false,
+    "_receiveShadow": false,
+    "_recieveShadow": false,
+    "_lightmapSize": 64
+  },
+  {
+    "__type__": "611ad8iEoJFBLOvJx7+gI4F",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 66
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "renderTexName": "renderTex1",
+    "testNode": null,
+    "textutre": null,
+    "_id": "d8QSsVFctHHJhlEUSVtdom"
+  },
+  {
     "__type__": "cc.Node",
     "_name": "planes",
     "_objFlags": 0,
@@ -2158,22 +2275,22 @@
     },
     "_children": [
       {
-        "__id__": 66
+        "__id__": 71
       },
       {
-        "__id__": 69
+        "__id__": 74
       },
       {
-        "__id__": 72
+        "__id__": 77
       },
       {
-        "__id__": 75
+        "__id__": 80
       },
       {
-        "__id__": 78
+        "__id__": 83
       },
       {
-        "__id__": 81
+        "__id__": 86
       }
     ],
     "_active": false,
@@ -2212,13 +2329,13 @@
     "_name": "Plane",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 70
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 67
+        "__id__": 72
       }
     ],
     "_prefab": null,
@@ -2255,7 +2372,7 @@
     "_name": "Plane<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 66
+      "__id__": 71
     },
     "_enabled": true,
     "__prefab": null,
@@ -2267,7 +2384,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 68
+      "__id__": 73
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@2e76e",
@@ -2279,7 +2396,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": null,
     "_enableMorph": true,
     "_id": "d7P9jle0RJtqCk03cCLJKo"
@@ -2305,13 +2421,13 @@
     "_name": "Plane-001",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 70
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 70
+        "__id__": 75
       }
     ],
     "_prefab": null,
@@ -2348,7 +2464,7 @@
     "_name": "Plane<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 69
+      "__id__": 74
     },
     "_enabled": true,
     "__prefab": null,
@@ -2360,7 +2476,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 71
+      "__id__": 76
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@2e76e",
@@ -2372,7 +2488,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": null,
     "_enableMorph": true,
     "_id": "3dDWnJow5E/6JJRh9HQa4r"
@@ -2398,13 +2513,13 @@
     "_name": "Plane-002",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 70
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 73
+        "__id__": 78
       }
     ],
     "_prefab": null,
@@ -2441,7 +2556,7 @@
     "_name": "Plane<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 72
+      "__id__": 77
     },
     "_enabled": true,
     "__prefab": null,
@@ -2453,7 +2568,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 74
+      "__id__": 79
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@2e76e",
@@ -2465,7 +2580,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": null,
     "_enableMorph": true,
     "_id": "d4vTlRbyRPzZjHwcT5Ycht"
@@ -2491,13 +2605,13 @@
     "_name": "Plane-003",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 70
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 76
+        "__id__": 81
       }
     ],
     "_prefab": null,
@@ -2534,7 +2648,7 @@
     "_name": "Plane<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 75
+      "__id__": 80
     },
     "_enabled": true,
     "__prefab": null,
@@ -2546,7 +2660,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 77
+      "__id__": 82
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@2e76e",
@@ -2558,7 +2672,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": null,
     "_enableMorph": true,
     "_id": "61+qN3Yo9PPaxpXQsGLy9o"
@@ -2584,13 +2697,13 @@
     "_name": "Plane-004",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 70
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 79
+        "__id__": 84
       }
     ],
     "_prefab": null,
@@ -2627,7 +2740,7 @@
     "_name": "Plane<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 78
+      "__id__": 83
     },
     "_enabled": true,
     "__prefab": null,
@@ -2639,7 +2752,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 80
+      "__id__": 85
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@2e76e",
@@ -2651,7 +2764,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": null,
     "_enableMorph": true,
     "_id": "5a/3R3kotHc6s1zA8pxmIu"
@@ -2677,13 +2789,13 @@
     "_name": "Plane-005",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 70
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 82
+        "__id__": 87
       }
     ],
     "_prefab": null,
@@ -2720,7 +2832,7 @@
     "_name": "Plane<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 81
+      "__id__": 86
     },
     "_enabled": true,
     "__prefab": null,
@@ -2732,7 +2844,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 83
+      "__id__": 88
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@2e76e",
@@ -2744,7 +2856,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 0,
-    "_probePlanarmap": null,
     "_probeCubemap": null,
     "_enableMorph": true,
     "_id": "8cVKRQhXlDE4n91X0oMVa3"
@@ -2776,7 +2887,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 85
+        "__id__": 90
       }
     ],
     "_prefab": null,
@@ -2784,7 +2895,7 @@
       "__type__": "cc.Vec3",
       "x": 19.017,
       "y": -13.264,
-      "z": 7.943
+      "z": -45.612
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -2795,9 +2906,9 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 26.7,
-      "y": 36.3,
-      "z": 23.8
+      "x": 40,
+      "y": 40,
+      "z": 40
     },
     "_layer": 1,
     "_euler": {
@@ -2813,7 +2924,7 @@
     "_name": "Plane<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 84
+      "__id__": 89
     },
     "_enabled": true,
     "__prefab": null,
@@ -2825,7 +2936,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 86
+      "__id__": 91
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@2e76e",
@@ -2837,7 +2948,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 2,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -2872,15 +2982,15 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 88
+        "__id__": 93
       }
     ],
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -13.218,
-      "y": -5.153,
-      "z": 52.951
+      "x": -41.417,
+      "y": 27.606,
+      "z": 45.985
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -2891,9 +3001,9 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 20,
-      "y": 20,
-      "z": 20
+      "x": 50,
+      "y": 50,
+      "z": 50
     },
     "_layer": 1,
     "_euler": {
@@ -2909,7 +3019,7 @@
     "_name": "Sphere<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 87
+      "__id__": 92
     },
     "_enabled": true,
     "__prefab": null,
@@ -2921,7 +3031,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 89
+      "__id__": 94
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@17020",
@@ -2933,7 +3043,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 1,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -2968,7 +3077,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 91
+        "__id__": 96
       }
     ],
     "_prefab": null,
@@ -3005,7 +3114,7 @@
     "_name": "Capsule<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 90
+      "__id__": 95
     },
     "_enabled": true,
     "__prefab": null,
@@ -3017,7 +3126,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 92
+      "__id__": 97
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@801ec",
@@ -3029,7 +3138,6 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 1,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
@@ -3064,7 +3172,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 94
+        "__id__": 99
       }
     ],
     "_prefab": null,
@@ -3101,7 +3209,7 @@
     "_name": "Sphere<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 93
+      "__id__": 98
     },
     "_enabled": true,
     "__prefab": null,
@@ -3113,7 +3221,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 95
+      "__id__": 100
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@17020",
@@ -3125,13 +3233,107 @@
     "_shadowNormalBias": 0,
     "_bakeToReflectionProbe": true,
     "_reflectionProbeType": 1,
-    "_probePlanarmap": null,
     "_probeCubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
     },
     "_enableMorph": true,
     "_id": "11vhe2e71MnI6TQxxz/Gm8"
+  },
+  {
+    "__type__": "cc.ModelLightmapSettings",
+    "texture": null,
+    "uvParam": {
+      "__type__": "cc.Vec4",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 0
+    },
+    "_bakeable": false,
+    "_castShadow": false,
+    "_receiveShadow": false,
+    "_recieveShadow": false,
+    "_lightmapSize": 64
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "Sphere-002",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 102
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 132.31,
+      "y": 0.303,
+      "z": 62.694
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 20,
+      "y": 20,
+      "z": 20
+    },
+    "_layer": 1073741824,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "06rJTKvspLNp1WUpFs1nCV"
+  },
+  {
+    "__type__": "cc.MeshRenderer",
+    "_name": "Sphere<ModelComponent>",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 101
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_materials": [
+      {
+        "__uuid__": "89257c6f-f106-4ab0-854c-6a022f7826eb",
+        "__expectedType__": "cc.Material"
+      }
+    ],
+    "_visFlags": 0,
+    "lightmapSettings": {
+      "__id__": 103
+    },
+    "_mesh": {
+      "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@17020",
+      "__expectedType__": "cc.Mesh"
+    },
+    "_shadowCastingMode": 0,
+    "_shadowReceivingMode": 1,
+    "_shadowBias": 0,
+    "_shadowNormalBias": 0,
+    "_bakeToReflectionProbe": true,
+    "_reflectionProbeType": 0,
+    "_probeCubemap": {
+      "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
+      "__expectedType__": "cc.TextureCube"
+    },
+    "_enableMorph": true,
+    "_id": "b0S5xecCxMsahaq8r/EB8f"
   },
   {
     "__type__": "cc.ModelLightmapSettings",
@@ -3160,18 +3362,18 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 97
+        "__id__": 105
       },
       {
-        "__id__": 98
+        "__id__": 106
       }
     ],
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 36.373,
-      "y": -13.264,
-      "z": 20.123
+      "x": 76.215,
+      "y": 3.242,
+      "z": 12.433
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -3200,7 +3402,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 96
+      "__id__": 104
     },
     "_enabled": true,
     "__prefab": null,
@@ -3215,20 +3417,16 @@
       "a": 255
     },
     "_visibility": 1822425087,
-    "_probeType": 1,
+    "_probeType": 0,
     "_cubemap": {
       "__uuid__": "e49d622d-df6b-444d-9cef-8658348f5a18@b47c0",
       "__expectedType__": "cc.TextureCube"
     },
-    "_planarMap": {
-      "__uuid__": "2806f942-3fd7-4085-8095-441141e4f39b",
-      "__expectedType__": "cc.ImageAsset"
-    },
     "_size": {
       "__type__": "cc.Vec3",
       "x": 200,
-      "y": 51.5,
-      "z": 177.7
+      "y": 48.1,
+      "z": 175.3
     },
     "_sourceCamera": {
       "__id__": 6
@@ -3241,7 +3439,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 96
+      "__id__": 104
     },
     "_enabled": true,
     "__prefab": null,
@@ -3259,27 +3457,27 @@
     "_size": {
       "__type__": "cc.Vec3",
       "x": 400,
-      "y": 103,
-      "z": 355.4
+      "y": 96.2,
+      "z": 350.6
     },
     "_id": "11+VebpZ5NUrUJ0P4Twn5V"
   },
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 100
+      "__id__": 108
     },
     "shadows": {
-      "__id__": 101
+      "__id__": 109
     },
     "_skybox": {
-      "__id__": 102
+      "__id__": 110
     },
     "fog": {
-      "__id__": 103
+      "__id__": 111
     },
     "octree": {
-      "__id__": 104
+      "__id__": 112
     }
   },
   {
@@ -3332,7 +3530,7 @@
   },
   {
     "__type__": "cc.ShadowsInfo",
-    "_enabled": true,
+    "_enabled": false,
     "_type": 1,
     "_normal": {
       "__type__": "cc.Vec3",
@@ -3373,7 +3571,7 @@
     "_diffuseMapHDR": null,
     "_diffuseMapLDR": null,
     "_enabled": true,
-    "_useHDR": false,
+    "_useHDR": true,
     "_editableMaterial": null,
     "_reflectionHDR": null,
     "_reflectionLDR": {
