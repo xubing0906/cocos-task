@@ -121,7 +121,7 @@ CCProgram standard-vs %{
     CC_TRANSFER_FOG(pos);
     //CC_TRANSFER_SHADOW(pos);
 
-    #if CC_USE_LIGHTMAP && !USE_BATCHING && !CC_FORWARD_ADD
+    #if CC_USE_LIGHTMAP && !CC_FORWARD_ADD
       CCLightingMapCaclUV();
     #endif
 

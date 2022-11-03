@@ -3,9 +3,9 @@
   "type": "3d",
   "uuid": "ee5e4f11-9365-44a4-b810-ad062c167d4c",
   "creator": {
-    "version": "3.6.1"
+    "version": "3.6.2"
   },
-  "version": "3.6.1",
+  "version": "3.6.2",
   "dependencies": {
     "sharp": "^0.30.7"
   },

@@ -45,8 +45,8 @@
   "_props": [
     {
       "roughness": 0,
-      "metallic": 1,
-      "specularIntensity": 1
+      "metallic": 0,
+      "specularIntensity": 0
     },
     {},
     {}
